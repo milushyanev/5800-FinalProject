@@ -23,6 +23,7 @@ import javax.swing.text.Highlighter;
 //import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 
 
@@ -53,6 +54,8 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 		this.initializeComponents();
 
 		this.buildUI();
+		this.business = getBusiness();
+		
 	}
 
 	private void initializeComponents() {
@@ -68,11 +71,11 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 		this.panel3.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		//my stuff 
-		this.getCustomers = new JButton("Enumerate Customers");
+		this.getCustomers = new JButton("Get Customers");
 		this.getCustomers.addActionListener(this);
-		this.getProducts = new JButton("Enumerate Products");
+		this.getProducts = new JButton("Get Products");
 		this.getProducts.addActionListener(this);
-		this.getOrders = new JButton("Enumerate Orders");
+		this.getOrders = new JButton("Get Orders");
 		this.getOrders.addActionListener(this);
 		
 		this.dataArea = new JTextArea();
@@ -111,6 +114,8 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 		this.startDate.setText("1/1/1111");
 		this.endDate = new JTextField(8);
 		this.endDate.setText("2/2/2222");
+		
+		
 	}
 
 	private void buildUI() {
@@ -157,11 +162,18 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 
 	public void actionPerformed(ActionEvent event) {
 		
-		this.business = getBusiness();
+		
 		
 		if (event.getSource() == this.getCustomers) {
 			dataArea.setText("");
-			dataArea.append(business.getCustomers());
+			List customers = this.business.getCustomers();
+			for (Customer c : (List<Customer>) customers)
+			{
+				dataArea.append(c.toString());
+				dataArea.append("\n");
+						
+			}
+			
 			
 			view = 0;
 			
@@ -174,7 +186,14 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 		}
 		else if (event.getSource() == this.getProducts) {
 			dataArea.setText("");
-			dataArea.append(business.getProducts());
+			List products = this.business.getProducts();
+			
+			for (Product p : (List<Product>)products)
+			{
+				dataArea.append(p.toString());
+				dataArea.append("\n");
+						
+			}
 			
 			view = 1;
 			

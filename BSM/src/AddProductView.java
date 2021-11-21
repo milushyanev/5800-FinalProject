@@ -15,7 +15,7 @@ public class AddProductView implements ActionListener {
 
 	private JLabel addLbl, orderLbl;
 	
-	private JLabel productIDLbl, nameLbl;
+	private JLabel productIDLbl, nameLbl, priceLbl;
 	
 	private JPanel panel1;
 	
@@ -23,7 +23,7 @@ public class AddProductView implements ActionListener {
 
 	private Product product;
 	
-	private JTextField productID, name;
+	private JTextField productID, name, price;
 	
 	private DesktopAppView desktop;
 	
@@ -82,12 +82,16 @@ public class AddProductView implements ActionListener {
 		
 		this.nameLbl = new JLabel("name:");
 		nameLbl.setBounds(5, 130, 75, 16);
+		this.nameLbl = new JLabel("price:");
+		priceLbl.setBounds(5, 130, 75, 16);
 
 		
 		this.productID = new JTextField();
 		productID.setBounds(92, 96, 168, 28);
 		this.name = new JTextField();
 		name.setBounds(92, 124, 168, 28);
+		this.price = new JTextField();
+		price.setBounds(92, 124, 168, 28);
 
 
 		this.confirmAdd = new JButton("Confirm " + operation + "?");
@@ -106,6 +110,7 @@ public class AddProductView implements ActionListener {
 		
 		this.panel1.add(this.productID);
 		this.panel1.add(this.name);
+		this.panel1.add(this.price);
 
 		
 		this.panel1.add(this.confirmAdd);
@@ -125,12 +130,14 @@ if(event.getSource() == this.confirmAdd) {
 			
 			int productID;
 			
-			String name;
+			String name ="";
+			double price =0.0;
 			
 			try {
 			
 				productID = Integer.parseInt(this.productID.getText());
 				name = this.name.getText();
+				price = Double.parseDouble(this.productID.getText());
 
 			}
 			catch (Exception e) {
@@ -141,17 +148,17 @@ if(event.getSource() == this.confirmAdd) {
 			if(product == null) {
 				
 				//for testing purposes
-				Product p = new Product("test product");
+				Product p = new Product(name, price);
 				
-				desktop.addLine(p.getData());
+				desktop.addLine(p.toString());
 				BusinessLayer.addProduct(p);
 			}
 			else {
 				
 				//for testing purposes
-				Product p = new Product("edited product");
+				Product p = new Product("testname", 0.0);
 				
-				desktop.updateLine(line, p.getData());
+				desktop.updateLine(line, p.toString());
 				BusinessLayer.editProduct(p, 0); // need an id to edit product
 			}
 			//close window
