@@ -1,25 +1,28 @@
 
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+
 
 public class BusinessLayer {
-	
+	static SessionFactory factory;
 
-	public String getProducts() {
-		
-		//get from data acccess layer
-		
-		String s = "";
-		
-		//product 1
-		s += "ID = 123\t Name = name1\t Price = $1.00\n";
-		//product 2
-		s += "ID = 345\t Name = name2\t Price = $2.00\n";
-		//product 3
-		s += "fgh46euy4 5y\n";
-		
-		return s;
-		
+	public BusinessLayer()
+	{
+		factory = new Configuration().
+		        configure("hibernate.cfg.xml").
+		        addAnnotatedClass(Customer.class).
+		        addAnnotatedClass(Address.class).
+		        addAnnotatedClass(Product.class).
+		        buildSessionFactory();
+
 	}
-	
+
+
 	public String getOrders() {
 		
 		//get from data acccess layer
@@ -36,23 +39,37 @@ public class BusinessLayer {
 		return s;
 	}
 	
-	public String getCustomers() {
+	public List<Customer> getCustomers() {
 		
 		//get from data acccess layer
-		
-		String customers[] = new String[5];
-		for(int a = 0; a < 5; a++) {
-			customers[a] = "ID = " + a + "\tname" + a + "\taddress" + a;
+		Session session = factory.getCurrentSession();
+		try {
+			session = factory.openSession();
+			session.beginTransaction();
+			
+			List result = session.createQuery("from Customer").list();
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
 		}
+		return null;
 		
-		String s = "";
-		
-		for(String c : customers) {
-			s += c;
-			s += "\n";
-		}
-		
-		return s;
+//		String customers[] = new String[5];
+//		for(int a = 0; a < 5; a++) {
+//			customers[a] = "ID = " + a + "\tname" + a + "\taddress" + a;
+//		}
+//		
+//		String s = "";
+//		
+//		for(String c : customers) {
+//			s += c;
+//			s += "\n";
+//		}
+//		
+//		return s;
 	}
 
 	//
@@ -60,6 +77,19 @@ public class BusinessLayer {
 	//
 	public static boolean addCustomer(Customer c) {
 		
+		 
+		Session session = factory.getCurrentSession();
+		try {
+			session.beginTransaction();
+			System.out.println(c);
+			session.save(c);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
 		System.out.println("Adding customer....");
 		
 		//connect to data access here and add customer
@@ -68,7 +98,18 @@ public class BusinessLayer {
 	}
 	
 	public static boolean editCustomer(Customer c, int ID) {
-		
+		Session session = factory.getCurrentSession();
+		try {
+			session.beginTransaction();
+			System.out.println(c);
+			session.save(c);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
 		System.out.println("Modifying customer....");
 		
 		//connect to data access here and add customer
@@ -97,7 +138,18 @@ public class BusinessLayer {
 		
 		System.out.println("Adding Product....");
 		
-		//connect to data access here and add Product
+		Session session = factory.getCurrentSession();
+		try {
+			session.beginTransaction();
+			System.out.println(p);
+			session.save(p);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
 		
 		return true; //if successful return true
 	}
@@ -121,8 +173,41 @@ public class BusinessLayer {
 	}
 	
 	public static Product getProduct(int ID) {
-		//fetch product from data access		
-		return new Product();
+		//fetch product from data access	
+		
+		Session session = factory.getCurrentSession();
+		try {
+			session = factory.openSession();
+			session.beginTransaction();
+			
+			Product p = (Product) session.load(Product.class, ID);
+			return p;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
+		return null;
+	}
+	
+	public static List<Product> getProducts() {
+		//get from data acccess layer
+		Session session = factory.getCurrentSession();
+		try {
+			session = factory.openSession();
+			session.beginTransaction();
+			
+			List result = session.createQuery("from Product").list();
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
+		return null;
 	}
 	//
 	//order
@@ -157,5 +242,10 @@ public class BusinessLayer {
 	public static Order getOrder(int ID) {
 		//fetch order from data access		
 		return new Order();
+	}
+	
+	protected void finalize()
+	{
+		factory.close();
 	}
 }

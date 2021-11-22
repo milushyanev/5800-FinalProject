@@ -4,8 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,7 +21,7 @@ public class AddOrderView implements ActionListener {
 
 	private JLabel addLbl, orderLbl;
 	
-	private JLabel orderIDLbl, dateLbl, timeLbl, customerLbl, priceLbl, productsLbl;
+	private JLabel orderIDLbl, dateTimeLbl, customerLbl, priceLbl, productsLbl;
 	
 	private JTextArea products;
 	
@@ -24,9 +29,11 @@ public class AddOrderView implements ActionListener {
 	
 	private JButton confirmAdd;
 
-	private Order order;
+	private String[] order;
 	
-	private JTextField orderID, date, time, customer;
+	private JTextField orderID, customer;
+	
+	private JFormattedTextField dateTime;
 	
 	private DesktopAppView desktop;
 	
@@ -43,9 +50,10 @@ public class AddOrderView implements ActionListener {
 		buildFrame("add");
 	}
 	
-	public AddOrderView(DesktopAppView desktop, int id, int line) {
+	public AddOrderView(DesktopAppView desktop, String[] s, int line) {
 		this.desktop = desktop;
-		this.order = BusinessLayer.getOrder(id); //not null means editing
+		//this.order = BusinessLayer.getOrder(id); //not null means editing
+		this.order = s;
 		this.line = line;
 		if (order == null) {
 			//throw exception, Order not found
@@ -62,8 +70,8 @@ public class AddOrderView implements ActionListener {
 		buildFrame("edit");
 		
 		this.orderID.setText("" + orderID);
-		this.date.setText(date);
-		this.time.setText(time);
+		this.dateTime.setText(date);
+		
 		this.customer.setText(customer);
 		
 		this.products.append("product1\n");
@@ -89,11 +97,8 @@ public class AddOrderView implements ActionListener {
 		this.orderIDLbl = new JLabel("order id:");
 		orderIDLbl.setBounds(5, 102, 75, 16);
 		
-		this.dateLbl = new JLabel("date:");
-		dateLbl.setBounds(5, 130, 75, 16);
-		
-		this.timeLbl = new JLabel("time:");
-		timeLbl.setBounds(5, 158, 75, 16);
+		this.dateTimeLbl = new JLabel("dateTime:");
+		dateTimeLbl.setBounds(5, 130, 75, 16);
 		
 		this.customerLbl = new JLabel("customer:");
 		customerLbl.setBounds(5, 186, 75, 16);
@@ -112,10 +117,12 @@ public class AddOrderView implements ActionListener {
 		
 		this.orderID = new JTextField();
 		orderID.setBounds(92, 96, 168, 28);
-		this.date = new JTextField();
-		date.setBounds(92, 124, 168, 28);
-		this.time = new JTextField();
-		time.setBounds(92, 151, 168, 28);
+		
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy 'at' HH:mm:ss");
+		this.dateTime = new JFormattedTextField(df);
+		dateTime.setBounds(92, 124, 168, 28);
+		
+		dateTime.setBounds(92, 151, 168, 28);
 		this.customer = new JTextField();
 		customer.setBounds(92, 180, 168, 28);
 		this.products = new JTextArea();
@@ -134,16 +141,15 @@ public class AddOrderView implements ActionListener {
 		this.panel1.add(this.orderLbl);
 		
 		this.panel1.add(this.orderIDLbl);
-		this.panel1.add(this.dateLbl);
-		this.panel1.add(this.timeLbl);
+		this.panel1.add(this.dateTimeLbl);
+
 		this.panel1.add(this.customerLbl);
 		this.panel1.add(this.priceLbl);
 		this.panel1.add(this.productsLbl);
 		
 		
 		this.panel1.add(this.orderID);
-		this.panel1.add(this.date);
-		this.panel1.add(this.time);
+		this.panel1.add(this.dateTime);
 		this.panel1.add(this.customer);
 		this.panel1.add(this.products);
 		
@@ -168,14 +174,15 @@ if(event.getSource() == this.confirmAdd) {
 			
 			int orderID;
 			
-			String date, time, customer;
+			Date dateTime;
+			String customer;
 			
 			try {
 			
 				orderID = Integer.parseInt(this.orderID.getText());
-				date = this.date.getText();
-				time = this.time.getText();
-				customer = this.customer.getText();		
+				dateTime = (Date)this.dateTime.getValue();
+			
+				customer = this.customer.toString();		
 			}
 			catch (Exception e) {
 				System.out.println("bad format somewhere");
@@ -184,17 +191,17 @@ if(event.getSource() == this.confirmAdd) {
 			if(order == null) {
 				
 				//for testing purposes
-				Order o = new Order("test Order");
+				Order o = new Order();
 				
-				desktop.addLine(o.getData());
+				desktop.addLine(o);
 				BusinessLayer.addOrder(o);
 			}
 			else {
 				
 				//for testing purposes
-				Order o = new Order("edited Order");
+				Order o = new Order();
 				
-				desktop.updateLine(line, o.getData());
+				desktop.updateLine(line, o);
 				BusinessLayer.editOrder(o, 0);
 			}
 			//close window

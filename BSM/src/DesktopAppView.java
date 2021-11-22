@@ -14,26 +14,34 @@ import javax.swing.JFrame;
 //import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 //import javax.swing.JTextPane;
 import javax.swing.text.Highlighter;
+
+import org.hibernate.mapping.Component;
 
 //import javax.swing.JEditorPane;
 //import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
+import java.util.List;
 
 
 @SuppressWarnings("serial")
-public class DesktopAppView extends JFrame implements ActionListener, MouseListener {
+public class DesktopAppView extends JFrame implements ActionListener {
 
 	private JPanel panel1, panel2, panel3;
 	
 	private BusinessLayer business;
 	
-	private JTextArea dataArea;
+	//private JTextArea dataArea;
+	
+	private SimpleTable table;
+	private JTable  dataTable;
 	
 	private JButton getCustomers, getProducts, getOrders;
 	
@@ -53,6 +61,8 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 		this.initializeComponents();
 
 		this.buildUI();
+		this.business = getBusiness();
+		
 	}
 
 	private void initializeComponents() {
@@ -68,39 +78,60 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 		this.panel3.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		//my stuff 
-		this.getCustomers = new JButton("Enumerate Customers");
+		this.getCustomers = new JButton("Get Customers");
 		this.getCustomers.addActionListener(this);
-		this.getProducts = new JButton("Enumerate Products");
+		this.getProducts = new JButton("Get Products");
 		this.getProducts.addActionListener(this);
-		this.getOrders = new JButton("Enumerate Orders");
+		this.getOrders = new JButton("Get Orders");
 		this.getOrders.addActionListener(this);
 		
-		this.dataArea = new JTextArea();
-		dataArea.setBounds(30, 11, 500, 190);
-		dataArea.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	
-		dataArea.addMouseListener(this);
-		dataArea.setText("click a button to start...");
+//		this.dataArea = new JTextArea();
+//		dataArea.setBounds(30, 11, 500, 190);
+//		dataArea.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//	
+//		dataArea.addMouseListener(this);
+//		dataArea.setText("click a button to start...");
+		
+		this.table = new SimpleTable();
+		this.dataTable = new JTable(table);
+		dataTable.setBounds(6, 11, 872, 190);
+		
+
+		
+		dataTable.setDefaultRenderer(Object.class, (TableCellRenderer) new DefaultTableCellRenderer() {
+            public java.awt.Component getTableCellRendererComponent(JTable table,Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+       	
+            	java.awt.Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            	int selected = table.getSelectedRow();
+            	c.setBackground(row == 0 ? Color.LIGHT_GRAY : (row == selected ? Color.RED : Color.WHITE));
+
+                
+                return c;
+            }
+           });
+		
+		
+
 
 
 		
 		this.addButton = new JButton("...");
-		this.addButton.setBounds(30, 202, 160, 28);
+		this.addButton.setBounds(198, 202, 160, 28);
 		this.addButton.setVisible(false);
 		this.addButton.addActionListener(this);
 		
 		this.editButton = new JButton("...");
-		this.editButton.setBounds(202, 202, 160, 28);
+		this.editButton.setBounds(370, 202, 160, 28);
 		this.editButton.setVisible(false);
 		this.editButton.addActionListener(this);
 		
 		this.deleteButton = new JButton("...");
-		this.deleteButton.setBounds(370, 202, 160, 28);
+		this.deleteButton.setBounds(542, 202, 160, 28);
 		this.deleteButton.setVisible(false);
 		this.deleteButton.addActionListener(this);
 		
 		this.reportButton = new JButton("...");
-		this.reportButton.setBounds(30, 242, 500, 28);
+		this.reportButton.setBounds(208, 234, 500, 28);
 		this.reportButton.setVisible(false);
 		this.reportButton.addActionListener(this);
 		
@@ -111,6 +142,8 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 		this.startDate.setText("1/1/1111");
 		this.endDate = new JTextField(8);
 		this.endDate.setText("2/2/2222");
+		
+		
 	}
 
 	private void buildUI() {
@@ -127,7 +160,7 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 		panel2.setLayout(null);
 		
 
-		this.panel2.add(dataArea);
+		this.panel2.add(dataTable);
 
 		this.panel3.add(dateReport);
 		this.panel3.add(this.startDate);
@@ -145,7 +178,7 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 
 
 		this.setTitle("BSM Desktop Application");
-		this.setBounds(350, 140, 560, 383);
+		this.setBounds(350, 140, 900, 383);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setVisible(true);
@@ -157,11 +190,27 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 
 	public void actionPerformed(ActionEvent event) {
 		
-		this.business = getBusiness();
+		
+		this.business = this.getBusiness();
 		
 		if (event.getSource() == this.getCustomers) {
-			dataArea.setText("");
-			dataArea.append(business.getCustomers());
+			
+			table.setColumnCount(0);
+			table.setRowCount(0);
+			
+
+			String columns[] = {"ID", "First Name", "Last Name", "DoB", "Phone", "Address"};
+			
+			for(String c : columns) {
+				table.addColumn(c);
+			}
+			
+			table.addRow(columns);
+			
+			List<Customer> customers = this.business.getCustomers();
+			for(Customer c : (List<Customer>) customers) {
+				table.addRow(c.getTableEntry());
+			}
 			
 			view = 0;
 			
@@ -173,9 +222,44 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 			selectedLine = -1;
 		}
 		else if (event.getSource() == this.getProducts) {
-			dataArea.setText("");
-			dataArea.append(business.getProducts());
+//			dataArea.setText("");
+//			List products = this.business.getProducts();
+//			
+//			for (Product p : (List<Product>)products)
+//			{
+//				dataArea.append(p.toString());
+//				dataArea.append("\n");
+//						
+//			}
+//			
 			
+			table.setColumnCount(0);
+			table.setRowCount(0);
+			
+
+			String columns[] = {"ID", "Name", "Price"};
+			
+			for(String c : columns) {
+				table.addColumn(c);
+			}
+			
+			table.addRow(columns);
+			
+			List<Product> products = BusinessLayer.getProducts();
+			for (Product p : (List<Product>)products)
+			{
+				table.addRow(p.getTableEntry());
+						
+			}
+			
+			view = 0;
+			
+			updateButton(addButton, "Add Customer");
+			updateButton(editButton, "Edit Customer");
+			updateButton(deleteButton, "Delete Customer");
+			updateButton(reportButton, "Show Customer's Revenue Report");
+			
+			selectedLine = -1;
 			view = 1;
 			
 			updateButton(addButton, "Add Product");
@@ -187,8 +271,9 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 			
 		}
 		else if (event.getSource() == this.getOrders) {
-			dataArea.setText("");
-			dataArea.append(business.getOrders());
+			
+			
+			//TODO
 			
 			view = 2;
 			
@@ -212,23 +297,32 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 		}
 		else if(event.getSource() == this.editButton) {
 			
+			selectedLine = dataTable.getSelectedRow();
+			
 			if(selectedLine == -1) {
 				//throw exception
 				JOptionPane.showMessageDialog (null, new MessageException("bad selection"));
 				return;
 			}
 			
+			
+			String[] row = getRow(selectedLine);
+			
+			System.out.println(event);
+			
 			if(view == 0) {
-				new AddCustomerView(this, 0, selectedLine);			
+				new AddCustomerView(this, row, selectedLine);			
 			}
 			else if(view == 1) {
-				new AddProductView(this, 0, selectedLine);		
+				new AddProductView(this, row, selectedLine);		
 			}
 			else if(view == 2) {
-				new AddOrderView(this, 0, selectedLine);			
+				new AddOrderView(this, row, selectedLine);			
 			}
 		}
 		else if(event.getSource() == this.deleteButton) {
+			
+			selectedLine = dataTable.getSelectedRow();
 			
 			if(selectedLine == -1) {
 				//throw exception
@@ -239,7 +333,7 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 			
 			//extract the ID to delete from  this line
 			@SuppressWarnings("unused")
-			String line = getLine(selectedLine);
+			String lineID = getRow(selectedLine)[0];
 			
 			deleteLine(this.selectedLine);
 			selectedLine = -1;
@@ -266,8 +360,8 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 
 			
 
-			String line = getLine(selectedLine);
-			String header = "displaying report for " + line;
+			String lineID = getRow(selectedLine)[0];
+			String header = "displaying report for " + lineID;
 			String report = "";
 			if(view == 0) {				
 				report = "total spending: $11.11";
@@ -288,8 +382,18 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 		}
 	}
 	
-	public void addLine(String text) {
-		this.dataArea.append(text+ "\n");
+	private String[] getRow(int row) {
+		String rowArr[] = new String[dataTable.getColumnCount()];
+		
+		for(int a = 0; a < dataTable.getColumnCount(); a++) {
+			rowArr[a] = (String) dataTable.getValueAt(row, a);
+		}
+		
+		return rowArr;
+	}
+	
+	public void addLine(Item item) {
+		this.table.addRow(item.getTableEntry());
 	}
 	
 	private void updateButton(JButton button, String text) {
@@ -297,58 +401,21 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 		button.setText(text);
 	}
 	
-	public void updateLine(int line, String text) {
-		try {
-			int start = dataArea.getLineStartOffset(line);
-			int end = dataArea.getLineEndOffset(line);
-			
-			
-			String s = "";
-			s += dataArea.getText().substring(0, start);
-			s += text;
-			s += "\n";
-			s += dataArea.getText().substring(end, dataArea.getText().length());
-			
-			dataArea.setText(s);
-			
-			
-			
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
-	    
-	}
-	
-	private String getLine(int line) {
-		try {
-			int start = dataArea.getLineStartOffset(line);
-			int end = dataArea.getLineEndOffset(line);
-			
-			return dataArea.getText().substring(start, end);
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-			return "";
+	public void updateLine(int line, Item item) {
+		
+		String row[] = item.getTableEntry();
+		
+		int index = 0;
+		for(String s : row) {
+			this.table.setValueAt(s, line, index++);
 		}
 
 	}
 	
+
+	
 	private void deleteLine(int line) {
-		try {
-			int start = dataArea.getLineStartOffset(line);
-			int end = dataArea.getLineEndOffset(line);
-			
-			
-			String s = "";
-			s += dataArea.getText().substring(0, start);
-			s += dataArea.getText().substring(end, dataArea.getText().length());
-			
-			dataArea.setText(s);
-			
-			
-			
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
+		this.table.removeRow(line);
 	    
 	}
 	
@@ -361,57 +428,4 @@ public class DesktopAppView extends JFrame implements ActionListener, MouseListe
 		return this.business;
 	}
 
-	public void mouseClicked(MouseEvent event) {
-		
-		//for highlighting elements in the data area 
-		if(event.getSource() == this.dataArea) {
-		    Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.RED);
-		    
-		    int y = event.getY();
-		    
-		    
-		    int line = y/15;
-		    selectedLine = line;
-		    
-		    int start;
-		    int end;
-			try {
-				dataArea.getHighlighter().removeAllHighlights();
-				start = dataArea.getLineStartOffset(line);
-			    end = dataArea.getLineEndOffset(line);
-			    dataArea.getHighlighter().addHighlight(start, end-1, painter);	//subtract 1 so we don't include next line 	
-			    
-			    
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-			dataArea.getCaret().setVisible(false);
-
-		}
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 }

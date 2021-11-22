@@ -3,8 +3,12 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,17 +20,19 @@ public class AddCustomerView implements ActionListener {
 	
 	private JLabel broncoIDLbl, fnameLbl, lnameLbl, dobLbl, phoneLbl;
 	
-	private JLabel addressIDLbl, streetLbl, numberLbl, zipLbl, cityLbl, stateLbl;
+	private JLabel streetLbl, numberLbl, zipLbl, cityLbl, stateLbl;
 
 	private JPanel panel1;
 	
 	private JButton confirmAdd;
 
-	private Customer customer;
+	private String[] customer;
 	
-	private JTextField broncoID, fname, lname, dob, phone;
+	private JTextField broncoID, fname, lname, phone;
 	
-	private JTextField addressID, street, number, zip, city, state;
+	private JFormattedTextField dob;
+	
+	private JTextField street, number, zip, city, state;
 	
 	private DesktopAppView desktop;
 	
@@ -43,27 +49,30 @@ public class AddCustomerView implements ActionListener {
 		buildFrame("add");
 	}
 	
-	public AddCustomerView(DesktopAppView desktop, int id, int line) {
+	public AddCustomerView(DesktopAppView desktop, String[] c, int line) {
 		this.desktop = desktop;
-		this.customer = BusinessLayer.getCustomer(id); //not null means editing
+		//this.customer = BusinessLayer.getCustomer(id); //not null means editing
+		this.customer = c;
 		this.line = line;
 		if (customer == null) {
 			//throw exception, customer not found
 		}
 		
 		//all this information extracted from the customer retrieved from the data access
-		int broncoID = 123;
-		String fname = "first name1";
-		String lname = "last name1";
-		String dob = "date";
-		int phone = 1231231234;
+		int broncoID = -999999999; //change later
+		String fname = c[1];
+		String lname = c[2];
+		String dob = c[3].split(" ")[0];
+		dob = dob.replace('-', '/');
+		String phone = c[4];
 		
-		int addressid = 321;
-		String street = "street";
-		int number = 5555;
-		int zip = 3333;
-		String city = "city1";
-		String state = "state1";
+		Address a = Address.splitString(c[5]);
+		
+		String street = a.getStreet();
+		int number = a.getNumber();
+		int zip = a.getZip();
+		String city = a.getCity();
+		String state = a.getState();
 		
 		buildFrame("edit");
 		
@@ -73,7 +82,7 @@ public class AddCustomerView implements ActionListener {
 		this.dob.setText(dob);
 		this.phone.setText("" + phone);
 		
-		this.addressID.setText("" + addressid);
+
 		this.street.setText(street);
 		this.number.setText("" + number);
 		this.zip.setText("" + zip);
@@ -122,23 +131,21 @@ public class AddCustomerView implements ActionListener {
 		
 		
 		
-		this.addressIDLbl = new JLabel("address id:");
-		addressIDLbl.setBounds(268, 102, 62, 16);
 		
 		this.streetLbl = new JLabel("street:");
-		streetLbl.setBounds(268, 130, 75, 16);
+		streetLbl.setBounds(268, 102, 75, 16);
 		
 		this.numberLbl = new JLabel("number:");
-		numberLbl.setBounds(268, 158, 53, 16);
+		numberLbl.setBounds(268, 130, 53, 16);
 		
 		this.zipLbl = new JLabel("zip:");
-		zipLbl.setBounds(268, 186, 75, 16);
+		zipLbl.setBounds(268, 158, 75, 16);
 		
 		this.cityLbl = new JLabel("city:");
-		cityLbl.setBounds(268, 214, 75, 16);
+		cityLbl.setBounds(268, 186, 75, 16);
 		
 		this.stateLbl = new JLabel("state:");
-		stateLbl.setBounds(268, 244, 75, 16);
+		stateLbl.setBounds(268, 214, 75, 16);
 
 
 		
@@ -149,23 +156,24 @@ public class AddCustomerView implements ActionListener {
 		fname.setBounds(92, 124, 168, 28);
 		this.lname = new JTextField();
 		lname.setBounds(92, 151, 168, 28);
-		this.dob = new JTextField();
+		
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+		this.dob = new JFormattedTextField(df);
 		dob.setBounds(92, 180, 168, 28);
+		
 		this.phone = new JTextField();
 		phone.setBounds(92, 208, 168, 28);
 		
-		this.addressID = new JTextField();
-		addressID.setBounds(340, 96, 168, 28);
 		this.street = new JTextField();
-		street.setBounds(340, 124, 168, 28);
+		street.setBounds(340, 96, 168, 28);
 		this.number = new JTextField();
-		number.setBounds(340, 152, 168, 28);
+		number.setBounds(340, 124, 168, 28);
 		this.zip = new JTextField();
-		zip.setBounds(340, 180, 168, 28);
+		zip.setBounds(340, 152, 168, 28);
 		this.city = new JTextField();
-		city.setBounds(340, 208, 168, 28);
+		city.setBounds(340, 180, 168, 28);
 		this.state = new JTextField();
-		state.setBounds(340, 238, 168, 28);
+		state.setBounds(340, 208, 168, 28);
 		
 		this.confirmAdd = new JButton("Confirm " + operation + "?");
 		confirmAdd.setBounds(58, 278, 378, 25);
@@ -183,7 +191,6 @@ public class AddCustomerView implements ActionListener {
 		this.panel1.add(this.dobLbl);
 		this.panel1.add(this.phoneLbl);
 		
-		this.panel1.add(this.addressIDLbl);
 		this.panel1.add(this.streetLbl);
 		this.panel1.add(this.numberLbl);
 		this.panel1.add(this.zipLbl);
@@ -196,7 +203,6 @@ public class AddCustomerView implements ActionListener {
 		this.panel1.add(this.dob);
 		this.panel1.add(this.phone);
 		
-		this.panel1.add(this.addressID);
 		this.panel1.add(this.street);
 		this.panel1.add(this.number);
 		this.panel1.add(this.zip);
@@ -221,19 +227,28 @@ public class AddCustomerView implements ActionListener {
 		
 if(event.getSource() == this.confirmAdd) {
 			
-			int broncoID, phone, addressID, number, zip;
+			int broncoID = 0 ;
+			String phone = "" ;
+			int addressID = 0 ;
+			int number = 0 ; 
+			int zip = 0 ;
 			
-			String fname, lname, dob, street, city, state;
+			String fname ="";
+			String lname ="";
+			Date dob = null ;
+			String street ="";
+			String city ="";
+			String state = "";
 			
 			try {
 			
 				broncoID = Integer.parseInt(this.broncoID.getText());
 				fname = this.fname.getText();
 				lname = this.lname.getText();
-				dob = this.dob.getText();
-				phone = Integer.parseInt(this.dob.getText());
+				DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+				dob = df.parse(this.dob.getText());
+				phone = this.phone.getText();
 				
-				addressID = Integer.parseInt(this.addressID.getText());
 				street = this.street.getText();
 				number = Integer.parseInt(this.number.getText());
 				zip = Integer.parseInt(this.zip.getText());
@@ -243,30 +258,33 @@ if(event.getSource() == this.confirmAdd) {
 			}
 			catch (Exception e) {
 				System.out.println("bad format somewhere");
+				System.out.println(e);
 			}
 			//use the above info to make customer and address
-			
-			
-		
-
-			
 			if(customer == null) {
 				
 				//for testing purposes
-				Address a = new Address("test address");
-				Customer c = new Customer("test customer");
-				
-				desktop.addLine(c.getData());
-				BusinessLayer.addCustomer(c);
+				if (fname != "" && lname != "" && dob != null && street != "" && city != "" && state != "" && phone != "" && number != 0 && zip != 0 && broncoID != 0 ) 
+
+				{
+					Address a = new Address( street, number, zip,city, state);
+					Customer c = new Customer(broncoID, fname, lname, dob, phone, a );
+					desktop.addLine(c);
+					BusinessLayer.addCustomer(c);
+				}
+
 			}
 			else {
 				
-				//for testing purposes
-				Address a = new Address("edited address");
-				Customer c = new Customer("edited customer");
-				
-				desktop.updateLine(line, c.getData());
-				BusinessLayer.editCustomer(c, 0);// need an id to edit customer
+				if (fname != "" && lname != "" && dob != null && street != "" && city != "" && state != "" && phone != "" && number != 0 && zip != 0 && broncoID != 0 ) 
+
+				{
+					int id = Integer.parseInt(customer[0]);
+					Address a = new Address( street, number, zip,city, state);
+					Customer c = new Customer(addressID, fname, lname, dob, phone, a );
+					desktop.updateLine(line, c);
+					BusinessLayer.editCustomer(c, id);
+				}
 			}
 			//close window
 			this.frame.setVisible(false);
