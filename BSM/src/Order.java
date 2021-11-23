@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -7,39 +9,57 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="order")
+@Table(name="customer_order")
 public class Order extends Item{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="order_id")
 	private int id; 
 	
-	@Column(name="dateTimeOrder")
-	private LocalDateTime dateTimeOrder; 
+	@Column(name="datetimeordered")
+	private LocalDateTime dateTimeOrdered; 
 	
 	
-	@Column(name="totalPrice")
+	@Column(name="total_price")
 	private Double totalPrice;
 	
-	@Column(name="discount")
-	private Double discount;
+	@Column(name="discountpercentage")
+	private Double discountpercentage;
+	
+	@ManyToMany(cascade= {CascadeType.PERSIST})
+	@JoinTable(
+			name="customer_order_product",
+			joinColumns=@JoinColumn(name="product_id"),
+			inverseJoinColumns=@JoinColumn(name="order_id")
+			)
+	private List<Product> products;
 
+	
+	@ManyToOne
+	@JoinColumn(name="customer_id")
+	private Customer customer;
+	
 	public Order()
 	{
-		
+		this.dateTimeOrdered  = LocalDateTime.now();
+		this.totalPrice = .0;
 	}
 	
-	public Order(Date dateOrder, LocalDateTime  dateTimeOrder, Double totalPrice, Double discount) {
+	public Order( LocalDateTime  dateTimeOrder, Double totalPrice, Double discount) {
 		super();
-		this.dateTimeOrder  = dateTimeOrder;
+		this.dateTimeOrdered  = dateTimeOrder;
 		this.totalPrice = totalPrice;
-		this.discount = discount;
+		this.discountpercentage = discount;
 	}
 
 	public int getId() {
@@ -51,11 +71,11 @@ public class Order extends Item{
 	}
 
 	public LocalDateTime getDateTimeOrder() {
-		return dateTimeOrder;
+		return dateTimeOrdered;
 	}
 
 	public void setDateTimeOrder(LocalDateTime dateTimeOrder) {
-		this.dateTimeOrder = dateTimeOrder;
+		this.dateTimeOrdered = dateTimeOrder;
 	}
 
 	public Double getTotalPrice() {
@@ -67,17 +87,41 @@ public class Order extends Item{
 	}
 
 	public Double getDiscount() {
-		return discount;
+		return discountpercentage;
 	}
 
 	public void setDiscount(Double discount) {
-		this.discount = discount;
+		this.discountpercentage = discount;
+	}
+	
+	public void addProduct(Product tempProduct)
+	{
+		if (products == null)
+		{
+			products = new ArrayList<>();
+		}
+		
+		products.add(tempProduct);
+		
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+	
+	public void DetermineDiscount()
+	{
+		this.discountpercentage= 0.3;
 	}
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", dateTimeOrder=" + dateTimeOrder + ", totalPrice=" + totalPrice + ", discount="
-				+ discount + "]";
+		return "Order [id=" + id + ", dateTimeOrder=" + dateTimeOrdered + ", totalPrice=" + totalPrice + ", discount="
+				+ discountpercentage + "]";
 	}
 	
 	

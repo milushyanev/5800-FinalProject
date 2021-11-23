@@ -175,14 +175,14 @@ if(event.getSource() == this.confirmAdd) {
 			int orderID;
 			
 			Date dateTime;
-			String customer;
+			int customerId = 1;
 			
 			try {
 			
-				orderID = Integer.parseInt(this.orderID.getText());
+				//orderID = Integer.parseInt(this.orderID.getText());
 				dateTime = (Date)this.dateTime.getValue();
 			
-				customer = this.customer.toString();		
+				customerId = Integer.parseInt(this.customer.getText());		
 			}
 			catch (Exception e) {
 				System.out.println("bad format somewhere");
@@ -194,7 +194,7 @@ if(event.getSource() == this.confirmAdd) {
 				Order o = new Order();
 				
 				desktop.addLine(o);
-				BusinessLayer.addOrder(o);
+				BusinessLayer.addOrder(o, customerId);
 			}
 			else {
 				

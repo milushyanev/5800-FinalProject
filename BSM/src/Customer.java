@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.text.SimpleDateFormat;
@@ -22,8 +25,25 @@ public class Customer extends Item {
 	
 	//TODO
 	//needs column int database
-	//private int bronco_id;
+	@Column(name="bronco_id")
+	private int bronco_id;
 	
+	public int getBronco_id() {
+		return bronco_id;
+	}
+	public void setBronco_id(int bronco_id) {
+		this.bronco_id = bronco_id;
+	}
+	public Date getDob() {
+		return dob;
+	}
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	@Column(name="firstname")
 	private String firstName;
 	
@@ -40,6 +60,10 @@ public class Customer extends Item {
 	@JoinColumn(name="address_id")
 	private Address address;
 	
+	@OneToMany(mappedBy="customer"
+			,cascade = CascadeType.PERSIST)
+	private List<Order> orders;
+	
 	
 	//just temporary, we don't want to store all data as string in final
 	//private String customerData;
@@ -49,7 +73,7 @@ public class Customer extends Item {
 		
 	}
 	public Customer(int bronco_id, String firstName, String lastName, Date dob, String phone, Address address) {
-		//this.bronco_id = bronco_id;
+		this.bronco_id = bronco_id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.dob = dob;
@@ -107,6 +131,21 @@ public class Customer extends Item {
 	public void setAddress(Address address)
 	{
 		this.address = address;
+	}
+	
+	public void addOrder(Order tempOrder)
+	{
+		if (orders == null)
+		{	
+			orders = new ArrayList<>();
+		}
+		
+		System.out.println("This: " + this.toString());
+		orders.add(tempOrder);
+		tempOrder.setCustomer(this);
+		
+
+	
 	}
 	
 	@Override

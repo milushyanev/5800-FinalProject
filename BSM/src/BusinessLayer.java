@@ -18,25 +18,29 @@ public class BusinessLayer {
 		        addAnnotatedClass(Customer.class).
 		        addAnnotatedClass(Address.class).
 		        addAnnotatedClass(Product.class).
+		        addAnnotatedClass(Order.class).
 		        buildSessionFactory();
 
 	}
 
 
-	public String getOrders() {
+	public List<Order> getOrders() {
 		
 		//get from data acccess layer
-		
-		String orders[] = new String[5];
-		
-		for(int a = 0; a < orders.length; a++) {
-			orders[a] = "ID = " + a + "\tTotal = $" + a + ".00";
+		Session session = factory.getCurrentSession();
+		try {
+			session = factory.openSession();
+			session.beginTransaction();
+			
+			List result = session.createQuery("from Order").list();
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
 		}
-		String s = "";
-		for (String o : orders) {
-			s += o + "\n";
-		}
-		return s;
+		return null;
 	}
 	
 	public List<Customer> getCustomers() {
@@ -97,12 +101,25 @@ public class BusinessLayer {
 		return true; //if successful return true
 	}
 	
-	public static boolean editCustomer(Customer c, int ID) {
+	public static boolean editCustomer(Customer c, int customerId) {
 		Session session = factory.getCurrentSession();
 		try {
 			session.beginTransaction();
 			System.out.println(c);
-			session.save(c);
+			Customer oldC = session.find(Customer.class, customerId);
+			
+			
+			System.out.println(oldC.toString());
+			
+			oldC.setFirstName(c.getFirstName());
+			oldC.setLastName(c.getLastName());
+			oldC.setAddress(c.getAddress());
+			oldC.setBronco_id(c.getBronco_id());
+			oldC.setPhone(c.getPhone());
+			oldC.setDob(c.getDOB());
+			
+			
+		
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -118,6 +135,24 @@ public class BusinessLayer {
 	}
 	
 	public static boolean deleteCustomer(int ID) {
+		Session session = factory.getCurrentSession();
+		try {
+			session.beginTransaction();
+			
+			Customer c = new Customer();
+			
+			c.setId(ID);
+			
+			session.delete(c);
+			session.getTransaction().commit();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
 		
 		System.out.println("Removing customer....");
 		
@@ -155,7 +190,23 @@ public class BusinessLayer {
 	}
 	
 	public static boolean editProduct(Product p, int ID) {
-		
+		Session session = factory.getCurrentSession();
+		try {
+			session.beginTransaction();
+			
+			Product oldP = session.find(Product.class, ID);
+			
+			oldP.setName(p.getName());
+			oldP.setPrice(p.getPrice());
+			
+			
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
 		System.out.println("Modifying Product....");
 		
 		//connect to data access here and add Product
@@ -164,6 +215,25 @@ public class BusinessLayer {
 	}
 	
 	public static boolean deleteProduct(int ID) {
+		Session session = factory.getCurrentSession();
+		
+		
+		try {
+			session.beginTransaction();
+			
+			Product p = new Product();
+			p.setId(ID);
+			
+			session.delete(p);
+			session.getTransaction().commit();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
 		
 		System.out.println("Removing Product....");
 		
@@ -212,7 +282,31 @@ public class BusinessLayer {
 	//
 	//order
 	//
-	public static boolean addOrder(Order o) {
+	public static boolean addOrder(Order o, int customerID) {
+
+		
+		Session session = factory.getCurrentSession();
+		try {
+			session.beginTransaction();
+			
+			o = new Order();
+			o.DetermineDiscount();
+			Product p = session.get(Product.class, 1);
+			o.addProduct(p);
+			
+			Customer c = session.get(Customer.class, customerID);
+			c.addOrder(o);
+			
+			session.save(o);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.print(e);
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
+		
 		
 		System.out.println("Adding Order....");
 		

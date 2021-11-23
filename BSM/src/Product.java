@@ -5,9 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 @Entity
 @Table(name="product")
@@ -23,6 +26,25 @@ public class Product extends Item  {
 	@Column(name ="price")
 	private double price;
 	
+	@ManyToMany(cascade= {CascadeType.PERSIST})
+	@JoinTable(
+			name="customer_order_product",
+			joinColumns=@JoinColumn(name="order_id"),
+			inverseJoinColumns=@JoinColumn(name="product_id")
+			)
+			
+	
+	private List<Order> orders;
+	
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	
 
 
@@ -31,8 +53,7 @@ public class Product extends Item  {
 	}
 	
 	
-	public Product(int id, String name, Double price) {
-		this.id = id;
+	public Product(String name, Double price) {
 		this.name = name;
 		this.price = price;
 	}

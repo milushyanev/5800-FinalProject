@@ -117,9 +117,11 @@ public class AddProductView implements ActionListener {
 
 			try {
 
-				productID = Integer.parseInt(this.productID.getText());
+				
 				name = this.name.getText();
+				System.out.println(name);
 				price = Double.parseDouble(this.price.getText());
+				System.out.println(price);
 
 			} catch (Exception e) {
 				System.out.println("bad format somewhere");
@@ -129,17 +131,18 @@ public class AddProductView implements ActionListener {
 			if (product == null) {
 
 				// for testing purposes
-				Product p = new Product(productID, name, price);
-
+				Product p = new Product(name, price);
+				System.out.println(p.toString());
+				
 				desktop.addLine(p);
 				BusinessLayer.addProduct(p);
 			} else {
 
-				// for testing purposes
-				Product p = new Product(productID, name, price);
+				int id = Integer.parseInt(product[0]);
+				Product p = new Product(name, price);
 
 				desktop.updateLine(line, p);
-				BusinessLayer.editProduct(p, productID); // need an id to edit product
+				BusinessLayer.editProduct(p, id); // need an id to edit product
 			}
 			// close window
 			this.frame.setVisible(false);

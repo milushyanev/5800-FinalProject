@@ -274,14 +274,32 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			
 			
 			//TODO
+			table.setColumnCount(0);
+			table.setRowCount(0);
 			
-			view = 2;
+
+			String columns[] = {"Order_ID", "Customer_ID", "Date Time Ordered", "Total Price", "Percentage of Discount"};
+			
+			for(String c : columns) {
+				table.addColumn(c);
+			}
+			
+			table.addRow(columns);
+			
+			List<Order> orders = this.business.getOrders();
+		
+			for(Order o : (List<Order>) orders) {
+				table.addRow(o.getTableEntry());
+			}
+			
+			
 			
 			updateButton(addButton, "Add Order");
 			updateButton(editButton, "Edit Order");
 			updateButton(deleteButton, "Delete Order");
 			reportButton.setVisible(false);
 			
+			view = 2;
 			selectedLine = -1;
 		}
 		else if(event.getSource() == this.addButton) {
@@ -323,6 +341,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 		else if(event.getSource() == this.deleteButton) {
 			
 			selectedLine = dataTable.getSelectedRow();
+			int id =  Integer.parseInt(getRow(selectedLine)[0]);
 			
 			if(selectedLine == -1) {
 				//throw exception
@@ -338,15 +357,15 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			deleteLine(this.selectedLine);
 			selectedLine = -1;
 			if(view == 0) {				
-				int id = 0;
+				
 				BusinessLayer.deleteCustomer(id);
 			}
 			else if(view == 1) {
-				int id = 0;
+				
 				BusinessLayer.deleteProduct(id);
 			}
 			else if(view == 2) {
-				int id = 0;
+				
 				BusinessLayer.deleteOrder(id);
 			}
 		}

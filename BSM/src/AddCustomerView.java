@@ -59,7 +59,7 @@ public class AddCustomerView implements ActionListener {
 		}
 		
 		//all this information extracted from the customer retrieved from the data access
-		int broncoID = -999999999; //change later
+		int broncoID = Integer.parseInt(c[0]); //change later
 		String fname = c[1];
 		String lname = c[2];
 		String dob = c[3].split(" ")[0];
@@ -281,7 +281,7 @@ if(event.getSource() == this.confirmAdd) {
 				{
 					int id = Integer.parseInt(customer[0]);
 					Address a = new Address( street, number, zip,city, state);
-					Customer c = new Customer(addressID, fname, lname, dob, phone, a );
+					Customer c = new Customer(broncoID, fname, lname, dob, phone, a );
 					desktop.updateLine(line, c);
 					BusinessLayer.editCustomer(c, id);
 				}
