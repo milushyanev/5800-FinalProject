@@ -291,9 +291,13 @@ public class BusinessLayer {
 			
 			o = new Order();
 			o.DetermineDiscount();
+			
+			// Replace 1 with your avalaible product ID - for testing only
+			// We will supply productID from UI at final 
 			Product p = session.get(Product.class, 1);
 			o.addProduct(p);
 			
+			//Enter Cusomter ID at UI 
 			Customer c = session.get(Customer.class, customerID);
 			c.addOrder(o);
 			
