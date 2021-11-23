@@ -222,17 +222,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			selectedLine = -1;
 		}
 		else if (event.getSource() == this.getProducts) {
-//			dataArea.setText("");
-//			List products = this.business.getProducts();
-//			
-//			for (Product p : (List<Product>)products)
-//			{
-//				dataArea.append(p.toString());
-//				dataArea.append("\n");
-//						
-//			}
-//			
-			
+
 			table.setColumnCount(0);
 			table.setRowCount(0);
 			
@@ -365,7 +355,6 @@ public class DesktopAppView extends JFrame implements ActionListener {
 				BusinessLayer.deleteProduct(id);
 			}
 			else if(view == 2) {
-				
 				
 				BusinessLayer.deleteOrder(id);
 			}
