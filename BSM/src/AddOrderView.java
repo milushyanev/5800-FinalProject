@@ -23,7 +23,7 @@ public class AddOrderView implements ActionListener {
 	
 	private JLabel orderIDLbl, dateTimeLbl, customerLbl, priceLbl, productsLbl;
 	
-	private JTextArea products;
+
 	
 	private JPanel panel1;
 	
@@ -31,7 +31,7 @@ public class AddOrderView implements ActionListener {
 
 	private String[] order;
 	
-	private JTextField orderID, customer;
+	private JTextField orderID, customer, products;
 	
 	private JFormattedTextField dateTime;
 	
@@ -74,8 +74,6 @@ public class AddOrderView implements ActionListener {
 		
 		this.customer.setText(customer);
 		
-		this.products.append("product1\n");
-		this.products.append("product2\n");
 	}
 
 
@@ -125,7 +123,7 @@ public class AddOrderView implements ActionListener {
 		dateTime.setBounds(92, 151, 168, 28);
 		this.customer = new JTextField();
 		customer.setBounds(92, 180, 168, 28);
-		this.products = new JTextArea();
+		this.products = new JTextField();
 		products.setBounds(336, 96, 168, 134);
 
 		
@@ -175,7 +173,8 @@ if(event.getSource() == this.confirmAdd) {
 			int orderID;
 			
 			Date dateTime;
-			int customerId = 1;
+			int customerId = 0;
+			int productId = 0;
 			
 			try {
 			
@@ -183,6 +182,8 @@ if(event.getSource() == this.confirmAdd) {
 				dateTime = (Date)this.dateTime.getValue();
 			
 				customerId = Integer.parseInt(this.customer.getText());		
+				
+				productId = Integer.parseInt(this.products.getText());		
 			}
 			catch (Exception e) {
 				System.out.println("bad format somewhere");
@@ -194,7 +195,7 @@ if(event.getSource() == this.confirmAdd) {
 				Order o = new Order();
 				
 				desktop.addLine(o);
-				BusinessLayer.addOrder(o, customerId);
+				BusinessLayer.addOrder(o, customerId,productId);
 			}
 			else {
 				

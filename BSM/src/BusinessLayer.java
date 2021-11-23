@@ -282,7 +282,7 @@ public class BusinessLayer {
 	//
 	//order
 	//
-	public static boolean addOrder(Order o, int customerID) {
+	public static boolean addOrder(Order o, int customerID, int productId) {
 
 		
 		Session session = factory.getCurrentSession();
@@ -294,7 +294,7 @@ public class BusinessLayer {
 			
 			// Replace 1 with your avalaible product ID - for testing only
 			// We will supply productID from UI at final 
-			Product p = session.get(Product.class, 1);
+			Product p = session.get(Product.class, productId);
 			o.addProduct(p);
 			
 			//Enter Cusomter ID at UI 
@@ -329,7 +329,24 @@ public class BusinessLayer {
 	}
 	
 	public static boolean deleteOrder(int ID) {
+		Session session = factory.getCurrentSession();
 		
+		
+		try {
+			session.beginTransaction();
+			
+			
+			
+			session.createQuery("DELETE FROM Order");
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
 		System.out.println("Removing Order....");
 		
 		//connect to data access here and add Order

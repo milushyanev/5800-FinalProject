@@ -366,6 +366,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			}
 			else if(view == 2) {
 				
+				
 				BusinessLayer.deleteOrder(id);
 			}
 		}
