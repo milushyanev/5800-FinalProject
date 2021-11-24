@@ -18,7 +18,7 @@ public class AddCustomerView implements ActionListener {
 
 	private JLabel addLbl, personLbl, addressLbl;
 	
-	private JLabel broncoIDLbl, fnameLbl, lnameLbl, dobLbl, phoneLbl;
+	private JLabel  fnameLbl, lnameLbl, dobLbl, phoneLbl;
 	
 	private JLabel streetLbl, numberLbl, zipLbl, cityLbl, stateLbl;
 
@@ -28,7 +28,7 @@ public class AddCustomerView implements ActionListener {
 
 	private String[] customer;
 	
-	private JTextField broncoID, fname, lname, phone;
+	private JTextField fname, lname, phone;
 	
 	private JFormattedTextField dob;
 	
@@ -76,7 +76,6 @@ public class AddCustomerView implements ActionListener {
 		
 		buildFrame("edit");
 		
-		this.broncoID.setText("" + broncoID);
 		this.fname.setText(fname);
 		this.lname.setText(lname);
 		this.dob.setText(dob);
@@ -113,20 +112,18 @@ public class AddCustomerView implements ActionListener {
 		
 		
 		
-		this.broncoIDLbl = new JLabel("bronco id:");
-		broncoIDLbl.setBounds(5, 102, 75, 16);
 		
 		this.fnameLbl = new JLabel("first name:");
-		fnameLbl.setBounds(5, 130, 75, 16);
+		fnameLbl.setBounds(5, 96, 75, 16);
 		
 		this.lnameLbl = new JLabel("last name:");
-		lnameLbl.setBounds(5, 158, 75, 16);
+		lnameLbl.setBounds(5, 124, 75, 16);
 		
 		this.dobLbl = new JLabel("date of birth:");
-		dobLbl.setBounds(5, 186, 75, 16);
+		dobLbl.setBounds(5, 152, 75, 16);
 		
 		this.phoneLbl = new JLabel("phone:");
-		phoneLbl.setBounds(5, 214, 75, 16);
+		phoneLbl.setBounds(5, 180, 75, 16);
 		
 		
 		
@@ -150,19 +147,17 @@ public class AddCustomerView implements ActionListener {
 
 		
 		
-		this.broncoID = new JTextField();
-		broncoID.setBounds(92, 96, 168, 28);
 		this.fname = new JTextField();
-		fname.setBounds(92, 124, 168, 28);
+		fname.setBounds(92, 96, 168, 28);
 		this.lname = new JTextField();
-		lname.setBounds(92, 151, 168, 28);
+		lname.setBounds(92, 124, 168, 28);
 		
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		this.dob = new JFormattedTextField(df);
-		dob.setBounds(92, 180, 168, 28);
+		dob.setBounds(92, 152, 168, 28);
 		
 		this.phone = new JTextField();
-		phone.setBounds(92, 208, 168, 28);
+		phone.setBounds(92, 180, 168, 28);
 		
 		this.street = new JTextField();
 		street.setBounds(340, 96, 168, 28);
@@ -185,7 +180,6 @@ public class AddCustomerView implements ActionListener {
 		this.panel1.add(this.personLbl);
 		this.panel1.add(this.addressLbl);
 		
-		this.panel1.add(this.broncoIDLbl);
 		this.panel1.add(this.fnameLbl);
 		this.panel1.add(this.lnameLbl);
 		this.panel1.add(this.dobLbl);
@@ -197,7 +191,6 @@ public class AddCustomerView implements ActionListener {
 		this.panel1.add(this.cityLbl);
 		this.panel1.add(this.stateLbl);
 		
-		this.panel1.add(this.broncoID);
 		this.panel1.add(this.fname);
 		this.panel1.add(this.lname);
 		this.panel1.add(this.dob);
@@ -242,7 +235,6 @@ if(event.getSource() == this.confirmAdd) {
 			
 			try {
 			
-				broncoID = Integer.parseInt(this.broncoID.getText());
 				fname = this.fname.getText();
 				lname = this.lname.getText();
 				DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -264,7 +256,7 @@ if(event.getSource() == this.confirmAdd) {
 			if(customer == null) {
 				
 				//for testing purposes
-				if (fname != "" && lname != "" && dob != null && street != "" && city != "" && state != "" && phone != "" && number != 0 && zip != 0 && broncoID != 0 ) 
+				if (fname != "" && lname != "" && dob != null && street != "" && city != "" && state != "" && phone != "" && number != 0 && zip != 0 ) 
 
 				{
 					Address a = new Address( street, number, zip,city, state);
@@ -276,7 +268,7 @@ if(event.getSource() == this.confirmAdd) {
 			}
 			else {
 				
-				if (fname != "" && lname != "" && dob != null && street != "" && city != "" && state != "" && phone != "" && number != 0 && zip != 0 && broncoID != 0 ) 
+				if (fname != "" && lname != "" && dob != null && street != "" && city != "" && state != "" && phone != "" && number != 0 && zip != 0 ) 
 
 				{
 					int id = Integer.parseInt(customer[0]);

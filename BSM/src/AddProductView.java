@@ -14,7 +14,7 @@ public class AddProductView implements ActionListener {
 
 	private JLabel addLbl, orderLbl;
 
-	private JLabel productIDLbl, nameLbl, priceLbl;
+	private JLabel nameLbl, priceLbl;
 
 	private JPanel panel1;
 
@@ -22,7 +22,7 @@ public class AddProductView implements ActionListener {
 
 	private String[] product;
 
-	private JTextField productID, name, price;
+	private JTextField name, price;
 
 	private DesktopAppView desktop;
 
@@ -49,7 +49,7 @@ public class AddProductView implements ActionListener {
 
 		buildFrame("edit");
 
-		this.productID.setText("" + s[0]);
+
 		this.name.setText(s[1]);
 		this.price.setText("" + s[2]);
 	}
@@ -65,23 +65,20 @@ public class AddProductView implements ActionListener {
 		orderLbl.setBounds(5, 54, 168, 30);
 		this.orderLbl.setFont(new Font("Arial", Font.PLAIN, 25));
 
-		this.productIDLbl = new JLabel("product id:");
-		productIDLbl.setBounds(5, 102, 75, 16);
+
 
 		this.nameLbl = new JLabel("name:");
-		nameLbl.setBounds(5, 136, 75, 16);
+		nameLbl.setBounds(5, 102, 75, 16);
 		this.priceLbl = new JLabel("price:");
-		priceLbl.setBounds(5, 170, 75, 16);
+		priceLbl.setBounds(5, 130, 75, 16);
 
-		this.productID = new JTextField();
-		productID.setBounds(92, 96, 168, 28);
 		this.name = new JTextField();
-		name.setBounds(92, 130, 168, 28);
+		name.setBounds(92, 96, 168, 28);
 		this.price = new JTextField();
-		price.setBounds(92, 164, 168, 28);
+		price.setBounds(92, 130, 168, 28);
 
 		this.confirmAdd = new JButton("Confirm " + operation + "?");
-		confirmAdd.setBounds(5, 240, 255, 25);
+		confirmAdd.setBounds(5, 170, 255, 25);
 		this.confirmAdd.addActionListener(this);
 
 		this.panel1 = new JPanel();
@@ -89,18 +86,16 @@ public class AddProductView implements ActionListener {
 		this.panel1.add(this.addLbl);
 		this.panel1.add(this.orderLbl);
 
-		this.panel1.add(this.productIDLbl);
 		this.panel1.add(this.nameLbl);
 		this.panel1.add(this.priceLbl);
 
-		this.panel1.add(this.productID);
 		this.panel1.add(this.name);
 		this.panel1.add(this.price);
 
 		this.panel1.add(this.confirmAdd);
 
 		frame.getContentPane().add(panel1, BorderLayout.CENTER);
-		frame.setBounds(280, 120, 292, 310);
+		frame.setBounds(280, 120, 292, 247);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
