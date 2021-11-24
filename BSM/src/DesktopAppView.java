@@ -361,6 +361,9 @@ public class DesktopAppView extends JFrame implements ActionListener {
 		}
 		else if(event.getSource() == this.reportButton) {
 			
+			
+			this.selectedLine = dataTable.getSelectedRow();
+			
 			if(selectedLine == -1) {
 				//throw exception
 				JOptionPane.showMessageDialog (null, new MessageException("bad selection"));
@@ -370,12 +373,14 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			
 
 			String lineID = getRow(selectedLine)[0];
-			String header = "displaying report for " + lineID;
+			String header = "displaying report for ";
 			String report = "";
-			if(view == 0) {				
+			if(view == 0) {
+				header += "customer #" + lineID;
 				report = "total spending: $11.11";
 			}
 			else if(view == 1) {
+				header += "product #" + lineID;
 				report = "date1 price1\ndate2 price2";
 			}
 			new ReportView(header, report);

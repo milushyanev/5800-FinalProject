@@ -129,11 +129,14 @@ public class Order extends Item{
 		this.discountpercentage= 0.3;
 	}
 
-	@Override
+
 	public String toString() {
 		return "Order [id=" + id + ", dateTimeOrder=" + dateTimeOrdered + ", totalPrice=" + totalPrice + ", discount="
 				+ discountpercentage + "]";
 	}
 	
-	
+	public String[] getTableEntry() {
+		return new String[] {"" + id, "" + customer.getId(), dateTimeOrdered.toString(), "" + totalPrice, "" + discountpercentage,};
+
+	}
 }
