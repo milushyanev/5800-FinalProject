@@ -36,7 +36,7 @@ public class AddOrderView implements ActionListener {
 
 	private JButton confirmAdd, moveToCart;
 
-	private String[] order;
+	
 
 	private JTextField orderID, customer;
 
@@ -47,7 +47,9 @@ public class AddOrderView implements ActionListener {
 	private JFrame frame;
 
 	private int line;
+	private Order order;
 	
+	boolean newOrder;
 	float price;
 
 	/**
@@ -55,35 +57,40 @@ public class AddOrderView implements ActionListener {
 	 */
 	public AddOrderView(DesktopAppView desktop) {
 		this.desktop = desktop;
-		this.order = null; // null indicates we are adding
+		this.order = new Order(); // null indicates we are adding
+		
+		this.newOrder = true;
+		
 		buildFrame("add");
 		
 		price = 0;
+		
+		
 	}
 
 	public AddOrderView(DesktopAppView desktop, String[] s, int line) {
 		this.desktop = desktop;
 		// this.order = BusinessLayer.getOrder(id); //not null means editing
-		this.order = s;
+		this.newOrder = false;
 		this.line = line;
 		if (order == null) {
 			// throw exception, Order not found
 		}
 
 		// all this information extracted from the Order retrieved from the data access
-		int orderID = 123;
-		String date = "1/1/1111";
-		String time = "11:11";
+		int orderID = Integer.parseInt(s[0]);
+		String name = s[1];
+		String price = s[2];
 		String customer = "customer name";
 
 		buildFrame("edit");
 
 		this.orderID.setText("" + orderID);
-		this.dateTime.setText(date);
+		this.dateTime.setText(LocalDateTime.now().toString());
 
 		this.customer.setText(customer);
 		
-		price = 0;
+		
 
 //		this.products.append("product1\n");
 //		this.products.append("product2\n");
@@ -236,13 +243,14 @@ public class AddOrderView implements ActionListener {
 	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent event) {
 
+		
 		if (event.getSource() == this.confirmAdd) {
 
 			int orderID;
 
 			Date dateTime;
-			int customerId = 1;
-
+			int customerId = 0;
+			int NoOfProduct = this.order.getProducts().size();
 			try {
 
 				// orderID = Integer.parseInt(this.orderID.getText());
@@ -253,18 +261,18 @@ public class AddOrderView implements ActionListener {
 				System.out.println("bad format somewhere");
 			}
 			// use the above info to make Order and address
-			if (order == null) {
+			if (newOrder == true) {
 
 				// for testing purposes
-				Order o = new Order();
-
-				desktop.addLine(o);
-				BusinessLayer.addOrder(o, customerId);
+				
+				System.out.println("Calling adding order");
+				desktop.addLine(order);
+				BusinessLayer.addOrder(this.order, customerId);
 			} else {
 
 				// for testing purposes
 				Order o = new Order();
-
+				System.out.println("Calling editing order");
 				desktop.updateLine(line, o);
 				BusinessLayer.editOrder(o, 0);
 			}
@@ -279,6 +287,17 @@ public class AddOrderView implements ActionListener {
 			String[] data = this.getRow(selected);
 			
 			this.cartTable.addRow(data);
+			
+			
+			
+			int tempProductId = Integer.parseInt(data[0]);
+			
+			String tempProductName = (String)data[1];
+			
+			Double tempProductPrice = Double.parseDouble(data[2]);
+			Product p = new Product (tempProductId, tempProductName, tempProductPrice);
+			
+			this.order.addProduct(p);
 			
 			price += Double.parseDouble(data[2]);
 			

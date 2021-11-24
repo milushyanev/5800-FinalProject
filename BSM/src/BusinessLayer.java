@@ -289,18 +289,13 @@ public class BusinessLayer {
 		try {
 			session.beginTransaction();
 			
-			o = new Order();
+			
 			o.DetermineDiscount();
 			
-			// Replace 1 with your avalaible product ID - for testing only
-			// We will supply productID from UI at final 
-			Product p = session.get(Product.class, 1);
-			o.addProduct(p);
 			
 			//Enter Cusomter ID at UI 
 			Customer c = session.get(Customer.class, customerID);
 			c.addOrder(o);
-			
 			session.save(o);
 			session.getTransaction().commit();
 		} catch (Exception e) {
@@ -321,7 +316,7 @@ public class BusinessLayer {
 	
 	public static boolean editOrder(Order o, int ID) {
 		
-		System.out.println("Modifying Order....");
+		System.out.println("Modifying Ordeewr....");
 		
 		//connect to data access here and add Order
 		
@@ -341,6 +336,8 @@ public class BusinessLayer {
 		//fetch order from data access		
 		return new Order();
 	}
+	
+
 	
 	protected void finalize()
 	{

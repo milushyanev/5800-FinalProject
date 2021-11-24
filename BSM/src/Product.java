@@ -29,8 +29,8 @@ public class Product extends Item  {
 	@ManyToMany(cascade= {CascadeType.PERSIST})
 	@JoinTable(
 			name="customer_order_product",
-			joinColumns=@JoinColumn(name="order_id"),
-			inverseJoinColumns=@JoinColumn(name="product_id")
+			joinColumns=@JoinColumn(name="product_id"),
+			inverseJoinColumns=@JoinColumn(name="order_id")
 			)
 			
 	
@@ -57,6 +57,12 @@ public class Product extends Item  {
 		this.name = name;
 		this.price = price;
 	}
+	
+	public Product(int Id, String name, Double price) {
+		this.id = Id;
+		this.name = name;
+		this.price = price;
+	}
 
 
 	public String getName() {
@@ -76,6 +82,18 @@ public class Product extends Item  {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	
+	
+
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+
+	public void setOrder(Order order) {
+		this.orders.add(order);
 	}
 
 
