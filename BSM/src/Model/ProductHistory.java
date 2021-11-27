@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 
 @Entity
@@ -29,16 +30,24 @@ public class ProductHistory {
 	private double price;
 	
 	@Column(name="date")
-	private Date date;
+	private LocalDate date;
 	
 	@ManyToOne
 	@JoinColumn(name="product_id")
 	private Product product;
 
-	public ProductHistory(double price, Date date) {
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public ProductHistory(double price, LocalDate localDate) {
 		super();
 		this.price = price;
-		this.date = date;
+		this.date = localDate;
 	}
 
 	public int getId() {
@@ -57,11 +66,11 @@ public class ProductHistory {
 		this.price = price;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 

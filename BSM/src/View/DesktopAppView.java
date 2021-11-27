@@ -25,7 +25,11 @@ import javax.swing.text.Highlighter;
 
 import org.hibernate.mapping.Component;
 
-import BusinessLayer.BusinessLayer;
+import BusinessLayer.CustomerManager;
+import BusinessLayer.ProductManager;
+
+import BusinessLayer.OrderManager;
+
 import Model.Customer;
 import Model.Item;
 import Model.Order;
@@ -43,7 +47,9 @@ public class DesktopAppView extends JFrame implements ActionListener {
 
 	private JPanel panel1, panel2, panel3;
 	
-	private BusinessLayer business;
+	private CustomerManager customerManager;
+	private ProductManager productManager;
+	private OrderManager orderManager;
 	
 	//private JTextArea dataArea;
 	
@@ -68,7 +74,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 		this.initializeComponents();
 
 		this.buildUI();
-		this.business = getBusiness();
+		this.getManagers();
 		
 	}
 
@@ -198,7 +204,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		
 		
-		this.business = this.getBusiness();
+		
 		
 		if (event.getSource() == this.getCustomers) {
 			
@@ -214,7 +220,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			
 			table.addRow(columns);
 			
-			List<Customer> customers = this.business.getCustomers();
+			List<Customer> customers = this.customerManager.getCustomers();
 			for(Customer c : (List<Customer>) customers) {
 				table.addRow(c.getTableEntry());
 			}
@@ -242,7 +248,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			
 			table.addRow(columns);
 			
-			List<Product> products = BusinessLayer.getProducts();
+			List<Product> products = this.productManager.getProducts();
 			for (Product p : (List<Product>)products)
 			{
 				table.addRow(p.getTableEntry());
@@ -283,7 +289,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			
 			table.addRow(columns);
 			
-			List<Order> orders = this.business.getOrders();
+			List<Order> orders = this.orderManager.getOrders();
 		
 			for(Order o : (List<Order>) orders) {
 				table.addRow(o.getTableEntry());
@@ -355,15 +361,15 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			selectedLine = -1;
 			if(view == 0) {				
 				
-				BusinessLayer.deleteCustomer(id);
+				this.customerManager.deleteCustomer(id);
 			}
 			else if(view == 1) {
 				
-				BusinessLayer.deleteProduct(id);
+				this.productManager.deleteProduct(id);
 			}
 			else if(view == 2) {
 				
-				BusinessLayer.deleteOrder(id);
+				this.orderManager.deleteOrder(id);
 			}
 		}
 		else if(event.getSource() == this.reportButton) {
@@ -383,7 +389,9 @@ public class DesktopAppView extends JFrame implements ActionListener {
 				report = "total spending: $11.11";
 			}
 			else if(view == 1) {
-				report = "date1 price1\ndate2 price2";
+				System.out.println("Showing historical Price");
+				// Replace 1 with productId
+				this.productManager.getHistorialPrice(1);
 			}
 			new ReportView(header, report);
 		}
@@ -437,12 +445,18 @@ public class DesktopAppView extends JFrame implements ActionListener {
 	}
 	
 	//singleton pattern
-	private BusinessLayer getBusiness() {
-		if(this.business == null) {
-			this.business = new BusinessLayer();
+	private void getManagers() {
+		if(this.customerManager == null) {
+			this.customerManager = new CustomerManager();
 		}
-		
-		return this.business;
+		if(this.productManager == null) {
+			this.productManager = new ProductManager();
+			
+		}
+		if(this.orderManager == null) {
+			this.orderManager = new OrderManager();
+			
+		}
 	}
 
 }

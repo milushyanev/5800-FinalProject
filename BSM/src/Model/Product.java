@@ -12,6 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -37,8 +40,8 @@ public class Product extends Item  {
 	private List<Order> orders;
 	
 	@OneToMany(mappedBy="product"
-	,cascade = CascadeType.PERSIST)
-	private List<ProductHistory> producthistory;
+	,cascade = CascadeType.ALL)
+	private List<ProductHistory> productHistory ;
 	
 	
 	public int getId() {
@@ -61,6 +64,8 @@ public class Product extends Item  {
 	public Product(String name, Double price) {
 		this.name = name;
 		this.price = price;
+		this.addProductPriceHistory(price);
+		
 	}
 	
 	public Product(int Id, String name, Double price) {
@@ -87,6 +92,7 @@ public class Product extends Item  {
 
 	public void setPrice(double price) {
 		this.price = price;
+		this.addProductPriceHistory(price);
 	}
 	
 	
@@ -99,6 +105,29 @@ public class Product extends Item  {
 
 	public void setOrder(Order order) {
 		this.orders.add(order);
+	}
+
+	
+	public void addProductPriceHistory(double price ) {
+		if (productHistory == null)
+		{	
+			productHistory = new ArrayList<>();
+		}
+		
+		ProductHistory ph = new ProductHistory (price, LocalDate.now());
+		ph.setProduct(this);
+		productHistory.add(ph);
+		
+		
+	}
+
+	public List<ProductHistory> getProductHistory() {
+		return productHistory;
+	}
+
+
+	public void setProductHistory(List<ProductHistory> productHistory) {
+		this.productHistory = productHistory;
 	}
 
 

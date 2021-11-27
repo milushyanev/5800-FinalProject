@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import BusinessLayer.BusinessLayer;
+import BusinessLayer.CustomerManager;
 import Model.Address;
 import Model.Customer;
 import Model.Order;
@@ -289,7 +289,7 @@ if(event.getSource() == this.confirmAdd) {
 						Address a = new Address( street, number, zip,city, state);
 						Customer c = new Customer(broncoID, fname, lname, dob, phone, a );
 						
-						BusinessLayer.addCustomer(c);
+						CustomerManager.addCustomer(c);
 					}
 
 				}
@@ -301,7 +301,7 @@ if(event.getSource() == this.confirmAdd) {
 						Address a = new Address( street, number, zip,city, state);
 						Customer c = new Customer(broncoID, fname, lname, dob, phone, a );
 						
-						BusinessLayer.editCustomer(c, id);
+						CustomerManager.editCustomer(c, id);
 					}
 				}
 				this.frame.setVisible(false);
