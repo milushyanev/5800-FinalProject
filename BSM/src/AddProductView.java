@@ -1,4 +1,4 @@
-<<<<<<< HEAD:BSM/src/AddProductView.java
+
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -310,4 +310,3 @@ public class AddProductView implements ActionListener {
 	}
 
 }
->>>>>>> parent of 3fbf135 (Refactoring layers):BSM/src/View/AddProductView.java

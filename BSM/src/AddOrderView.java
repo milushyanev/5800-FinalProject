@@ -1,4 +1,4 @@
-<<<<<<< HEAD:BSM/src/AddOrderView.java
+
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -618,4 +618,3 @@ public class AddOrderView implements ActionListener {
 	}
 
 }
->>>>>>> parent of 3fbf135 (Refactoring layers):BSM/src/View/AddOrderView.java

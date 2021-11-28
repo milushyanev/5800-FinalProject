@@ -1,4 +1,4 @@
-<<<<<<< HEAD:BSM/src/AddCustomerView.java
+
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -300,7 +300,6 @@ if(event.getSource() == this.confirmAdd) {
 
 
 }
-=======
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -598,8 +597,6 @@ if(event.getSource() == this.confirmAdd) {
 
 	}
 	
-
-
-
 }
->>>>>>> parent of 3fbf135 (Refactoring layers):BSM/src/View/AddCustomerView.java
+
+

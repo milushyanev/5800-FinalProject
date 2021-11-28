@@ -1,5 +1,4 @@
-<<<<<<< HEAD:BSM/src/BusinessLayer.java
-<<<<<<< HEAD:BSM/src/BusinessLayer.java
+
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -1041,4 +1040,3 @@ public class BusinessLayer {
 		factory.close();
 	}
 }
->>>>>>> parent of 3fbf135 (Refactoring layers):BSM/src/BusinessLayer/BusinessLayer.java
