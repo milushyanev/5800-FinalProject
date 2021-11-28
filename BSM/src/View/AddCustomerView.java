@@ -20,7 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of aff98a2 (fixed some errors)
 import BusinessLayer.BusinessLayer;
 import Model.Address;
 import Model.Customer;

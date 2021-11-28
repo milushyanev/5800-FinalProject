@@ -21,10 +21,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.text.SimpleDateFormat;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 >>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
+=======
+>>>>>>> parent of aff98a2 (fixed some errors)
 =======
 >>>>>>> parent of aff98a2 (fixed some errors)
 import java.util.List;
@@ -84,11 +87,14 @@ public class Product extends Item  {
 		this.name = name;
 		this.price = price;
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/Product.java
 =======
 		this.addProductPriceHistory(price);
 		
 >>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
+=======
+>>>>>>> parent of aff98a2 (fixed some errors)
 =======
 >>>>>>> parent of aff98a2 (fixed some errors)
 	}
@@ -118,10 +124,13 @@ public class Product extends Item  {
 	public void setPrice(double price) {
 		this.price = price;
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/Product.java
 =======
 		this.addProductPriceHistory(price);
 >>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
+=======
+>>>>>>> parent of aff98a2 (fixed some errors)
 =======
 >>>>>>> parent of aff98a2 (fixed some errors)
 	}
@@ -138,6 +147,7 @@ public class Product extends Item  {
 		this.orders.add(order);
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/Product.java
 =======
@@ -165,6 +175,8 @@ public class Product extends Item  {
 	}
 
 >>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
+=======
+>>>>>>> parent of aff98a2 (fixed some errors)
 =======
 >>>>>>> parent of aff98a2 (fixed some errors)
 
