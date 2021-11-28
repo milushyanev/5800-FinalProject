@@ -37,9 +37,6 @@ public class Address {
 //	@OneToOne(cascade= {CascadeType.ALL})
 //	private Customer customer;
 
-	public Address() {
-
-	}
 
 	public Address(String street, int number, int zip, String city, String state) {
 		// this.AddressData = "";
@@ -74,14 +71,7 @@ public class Address {
 	public String toString() {
 		return "Address: " + street + " " + number + " " + zip + " " + city + " " + state;
 	}
-	public Address(String street, int number, int zip, String city, String state) {
-		//this.AddressData = "";
-		this.street = street;
-		this.number = number;
-		this.zip = zip;
-		this.city = city;
-		this.state = state;
-	}
+
 	
 //	public Address(String data) {
 //		this.AddressData = data;
