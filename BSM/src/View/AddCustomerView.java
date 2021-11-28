@@ -21,7 +21,10 @@ import javax.swing.JTextField;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of aff98a2 (fixed some errors)
 =======
 >>>>>>> parent of aff98a2 (fixed some errors)
 import BusinessLayer.BusinessLayer;
