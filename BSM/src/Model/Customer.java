@@ -1,4 +1,3 @@
-
 package Model;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.text.SimpleDateFormat;
-
 
 @Entity
 @Table(name="customer")

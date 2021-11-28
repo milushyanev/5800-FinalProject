@@ -1,7 +1,4 @@
-<<<<<<< HEAD:BSM/src/Product.java
-=======
 package Model;
->>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,28 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-<<<<<<< HEAD:BSM/src/Product.java
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import java.text.SimpleDateFormat;
-=======
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.text.SimpleDateFormat;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
->>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
-=======
->>>>>>> parent of aff98a2 (fixed some errors)
-=======
->>>>>>> parent of aff98a2 (fixed some errors)
-=======
->>>>>>> parent of aff98a2 (fixed some errors)
 import java.util.List;
 
 @Entity
@@ -55,20 +37,13 @@ public class Product extends Item  {
 			joinColumns=@JoinColumn(name="product_id"),
 			inverseJoinColumns=@JoinColumn(name="order_id")
 			)
-<<<<<<< HEAD:BSM/src/Product.java
-			
-	
-	private List<Order> orders;
-	
-=======
 	private List<Order> orders;
 	
 	@OneToMany(mappedBy="product"
-	,cascade = CascadeType.PERSIST)
-	private List<ProductHistory> producthistory;
+	,cascade = CascadeType.ALL)
+	private List<ProductHistory> productHistory ;
 	
 	
->>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
 	public int getId() {
 		return id;
 	}
@@ -89,20 +64,8 @@ public class Product extends Item  {
 	public Product(String name, Double price) {
 		this.name = name;
 		this.price = price;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD:BSM/src/Product.java
-=======
 		this.addProductPriceHistory(price);
 		
->>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
-=======
->>>>>>> parent of aff98a2 (fixed some errors)
-=======
->>>>>>> parent of aff98a2 (fixed some errors)
-=======
->>>>>>> parent of aff98a2 (fixed some errors)
 	}
 	
 	public Product(int Id, String name, Double price) {
@@ -129,19 +92,7 @@ public class Product extends Item  {
 
 	public void setPrice(double price) {
 		this.price = price;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD:BSM/src/Product.java
-=======
 		this.addProductPriceHistory(price);
->>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
-=======
->>>>>>> parent of aff98a2 (fixed some errors)
-=======
->>>>>>> parent of aff98a2 (fixed some errors)
-=======
->>>>>>> parent of aff98a2 (fixed some errors)
 	}
 	
 	
@@ -156,11 +107,6 @@ public class Product extends Item  {
 		this.orders.add(order);
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD:BSM/src/Product.java
-=======
 	
 	public void addProductPriceHistory(double price ) {
 		if (productHistory == null)
@@ -184,13 +130,6 @@ public class Product extends Item  {
 		this.productHistory = productHistory;
 	}
 
->>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
-=======
->>>>>>> parent of aff98a2 (fixed some errors)
-=======
->>>>>>> parent of aff98a2 (fixed some errors)
-=======
->>>>>>> parent of aff98a2 (fixed some errors)
 
 	@Override
 	public String toString() {

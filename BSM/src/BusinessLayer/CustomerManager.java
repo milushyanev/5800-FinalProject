@@ -1,6 +1,6 @@
 package BusinessLayer;
-
 import java.util.List;
+
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,16 +8,16 @@ import org.hibernate.cfg.Configuration;
 
 import Model.Address;
 import Model.Customer;
-import Model.Order;
 import Model.Product;
 import Model.ProductHistory;
+import Model.Order;
 
-public class ProductManager {
+public class CustomerManager {
 	static SessionFactory factory;
 	
-	public ProductManager() {
+	public CustomerManager() {
 		factory = new Configuration().
-				configure("hibernate.cfg.xml").
+		        configure("hibernate.cfg.xml").
 		        addAnnotatedClass(Customer.class).
 		        addAnnotatedClass(Address.class).
 		        addAnnotatedClass(Product.class).
@@ -26,15 +26,14 @@ public class ProductManager {
 		        buildSessionFactory();
 	}
 	
-	public static boolean addProduct(Product p) {
+	public static boolean addCustomer(Customer c) {
 		
-		System.out.println("Adding Product....");
-		
+		 
 		Session session = factory.getCurrentSession();
 		try {
 			session.beginTransaction();
-			System.out.println(p);
-			session.save(p);
+			System.out.println(c);
+			session.save(c);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -42,21 +41,32 @@ public class ProductManager {
 		} finally {
 			session.close();
 		}
+		System.out.println("Adding customer....");
+		
+		//connect to data access here and add customer
 		
 		return true; //if successful return true
 	}
 	
-	public static boolean editProduct(Product p, int ID) {
+	public static boolean editCustomer(Customer c, int customerId) {
 		Session session = factory.getCurrentSession();
 		try {
 			session.beginTransaction();
-			
-			Product oldP = session.find(Product.class, ID);
-			
-			oldP.setName(p.getName());
-			oldP.setPrice(p.getPrice());
+			System.out.println(c);
+			Customer oldC = session.find(Customer.class, customerId);
 			
 			
+			System.out.println(oldC.toString());
+			
+			oldC.setFirstName(c.getFirstName());
+			oldC.setLastName(c.getLastName());
+			oldC.setAddress(c.getAddress());
+			oldC.setBronco_id(c.getBronco_id());
+			oldC.setPhone(c.getPhone());
+			oldC.setDob(c.getDOB());
+			
+			
+		
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,24 +74,23 @@ public class ProductManager {
 		} finally {
 			session.close();
 		}
-		System.out.println("Modifying Product....");
+		System.out.println("Modifying customer....");
 		
-		//connect to data access here and add Product
+		//connect to data access here and add customer
 		
 		return true; //if successful return true
 	}
 	
-	public static boolean deleteProduct(int ID) {
+	public static boolean deleteCustomer(int ID) {
 		Session session = factory.getCurrentSession();
-		
-		
 		try {
 			session.beginTransaction();
 			
-			Product p = new Product();
-			p.setId(ID);
+			Customer c = new Customer();
 			
-			session.delete(p);
+			c.setId(ID);
+			
+			session.delete(c);
 			session.getTransaction().commit();
 			
 			
@@ -92,42 +101,28 @@ public class ProductManager {
 			session.close();
 		}
 		
-		System.out.println("Removing Product....");
+		System.out.println("Removing customer....");
 		
-		//connect to data access here and add Product
+		//connect to data access here and add customer
 		
 		return true; //if successful return true
 	}
 	
-	public static Product getProduct(int ID) {
-		//fetch product from data access	
-		
-		Session session = factory.getCurrentSession();
-		try {
-			session = factory.openSession();
-			session.beginTransaction();
-			
-			Product p = (Product) session.load(Product.class, ID);
-			return p;
-		} catch (Exception e) {
-			e.printStackTrace();
-			
-		} finally {
-			session.close();
-		}
-		return null;
+	public static Customer getCustomer(int ID) {
+		//fetch customer from data access		
+		return new Customer();
 	}
 	
-	public static List<Product> getProducts() {
+public List<Customer> getCustomers() {
+		
 		//get from data acccess layer
 		Session session = factory.getCurrentSession();
 		try {
 			session = factory.openSession();
 			session.beginTransaction();
 			
-			List result = session.createQuery("from Product").list();
+			List result = session.createQuery("from Customer").list();
 			return result;
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			
@@ -135,27 +130,8 @@ public class ProductManager {
 			session.close();
 		}
 		return null;
+		
 	}
-	
-	public List<ProductHistory> getHistorialPrice(int productId){
-		//get from data acccess layer
-				Session session = factory.getCurrentSession();
-				try {
-					session = factory.openSession();
-					session.beginTransaction();
-					
-					Product product = this.getProduct(productId);
-					return product.getProductHistory();
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-					
-				} finally {
-					session.close();
-				}
-				return null;
-	}
-	
 	protected void finalize()
 	{
 		factory.close();
