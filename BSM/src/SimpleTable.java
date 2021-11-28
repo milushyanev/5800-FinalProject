@@ -1,4 +1,3 @@
-package View;
 import javax.swing.table.DefaultTableModel;
 public class SimpleTable extends DefaultTableModel {
 
