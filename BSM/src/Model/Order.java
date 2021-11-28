@@ -1,4 +1,8 @@
 <<<<<<< HEAD:BSM/src/Order.java
+<<<<<<< HEAD:BSM/src/Order.java
+=======
+package Model;
+>>>>>>> parent of ae5bdab (changes):BSM/src/Model/Order.java
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

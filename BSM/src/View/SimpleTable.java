@@ -1,4 +1,8 @@
 <<<<<<< HEAD:BSM/src/SimpleTable.java
+<<<<<<< HEAD:BSM/src/SimpleTable.java
+=======
+package View;
+>>>>>>> parent of ae5bdab (changes):BSM/src/View/SimpleTable.java
 import javax.swing.table.DefaultTableModel;
 public class SimpleTable extends DefaultTableModel {
 

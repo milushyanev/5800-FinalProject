@@ -1,4 +1,8 @@
 <<<<<<< HEAD:BSM/src/Address.java
+<<<<<<< HEAD:BSM/src/Address.java
+=======
+package Model;
+>>>>>>> parent of ae5bdab (changes):BSM/src/Model/Address.java
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;

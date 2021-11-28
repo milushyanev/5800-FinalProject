@@ -1,10 +1,18 @@
+package BusinessLayer;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import Model.Address;
+import Model.Customer;
+import Model.Product;
+import Model.ProductHistory;
+import Model.Order;
 
 
 
@@ -19,6 +27,7 @@ public class BusinessLayer {
 		        addAnnotatedClass(Address.class).
 		        addAnnotatedClass(Product.class).
 		        addAnnotatedClass(Order.class).
+		        addAnnotatedClass(ProductHistory.class).
 		        buildSessionFactory();
 
 	}
@@ -324,7 +333,25 @@ public class BusinessLayer {
 	}
 	
 	public static boolean deleteOrder(int ID) {
+		Session session = factory.getCurrentSession();
 		
+		
+		try {
+			session.beginTransaction();
+			
+			Order o = new Order();
+			o.setId(ID);
+			
+			session.delete(o);
+			session.getTransaction().commit();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
 		System.out.println("Removing Order....");
 		
 		//connect to data access here and add Order

@@ -1,4 +1,8 @@
 <<<<<<< HEAD:BSM/src/Customer.java
+<<<<<<< HEAD:BSM/src/Customer.java
+=======
+package Model;
+>>>>>>> parent of ae5bdab (changes):BSM/src/Model/Customer.java
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

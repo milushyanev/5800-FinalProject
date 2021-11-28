@@ -1,4 +1,8 @@
 <<<<<<< HEAD:BSM/src/Item.java
+<<<<<<< HEAD:BSM/src/Item.java
+=======
+package Model;
+>>>>>>> parent of ae5bdab (changes):BSM/src/Model/Item.java
 
 public abstract class Item {
 	

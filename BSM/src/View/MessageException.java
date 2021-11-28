@@ -1,4 +1,8 @@
 <<<<<<< HEAD:BSM/src/MessageException.java
+<<<<<<< HEAD:BSM/src/MessageException.java
+=======
+package View;
+>>>>>>> parent of ae5bdab (changes):BSM/src/View/MessageException.java
 
 
 @SuppressWarnings("serial")

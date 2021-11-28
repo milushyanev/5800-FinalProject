@@ -1,4 +1,8 @@
+<<<<<<< HEAD:BSM/src/AddCustomerView.java
 <<<<<<< HEAD
+=======
+package View;
+>>>>>>> parent of ae5bdab (changes):BSM/src/View/AddCustomerView.java
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -300,6 +304,7 @@ if(event.getSource() == this.confirmAdd) {
 
 
 }
+<<<<<<< HEAD:BSM/src/AddCustomerView.java
 =======
 
 import java.awt.BorderLayout;
@@ -603,3 +608,5 @@ if(event.getSource() == this.confirmAdd) {
 
 }
 >>>>>>> parent of 696d6c5 (Add files via upload)
+=======
+>>>>>>> parent of ae5bdab (changes):BSM/src/View/AddCustomerView.java

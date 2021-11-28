@@ -1,4 +1,8 @@
 <<<<<<< HEAD:BSM/src/ReportView.java
+<<<<<<< HEAD:BSM/src/ReportView.java
+=======
+package View;
+>>>>>>> parent of ae5bdab (changes):BSM/src/View/ReportView.java
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
