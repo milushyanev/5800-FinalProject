@@ -20,10 +20,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.text.SimpleDateFormat;
+<<<<<<< HEAD
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 >>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
+=======
+>>>>>>> parent of aff98a2 (fixed some errors)
 import java.util.List;
 
 @Entity
@@ -55,8 +58,8 @@ public class Product extends Item  {
 	private List<Order> orders;
 	
 	@OneToMany(mappedBy="product"
-	,cascade = CascadeType.ALL)
-	private List<ProductHistory> productHistory ;
+	,cascade = CascadeType.PERSIST)
+	private List<ProductHistory> producthistory;
 	
 	
 >>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
@@ -80,11 +83,14 @@ public class Product extends Item  {
 	public Product(String name, Double price) {
 		this.name = name;
 		this.price = price;
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/Product.java
 =======
 		this.addProductPriceHistory(price);
 		
 >>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
+=======
+>>>>>>> parent of aff98a2 (fixed some errors)
 	}
 	
 	public Product(int Id, String name, Double price) {
@@ -111,10 +117,13 @@ public class Product extends Item  {
 
 	public void setPrice(double price) {
 		this.price = price;
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/Product.java
 =======
 		this.addProductPriceHistory(price);
 >>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
+=======
+>>>>>>> parent of aff98a2 (fixed some errors)
 	}
 	
 	
@@ -129,6 +138,7 @@ public class Product extends Item  {
 		this.orders.add(order);
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/Product.java
 =======
 	
@@ -155,6 +165,8 @@ public class Product extends Item  {
 	}
 
 >>>>>>> parent of ae5bdab (changes):BSM/src/Model/Product.java
+=======
+>>>>>>> parent of aff98a2 (fixed some errors)
 
 	@Override
 	public String toString() {

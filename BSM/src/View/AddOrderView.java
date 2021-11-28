@@ -22,8 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import BusinessLayer.OrderManager;
-import BusinessLayer.ProductManager;
+import BusinessLayer.BusinessLayer;
 import Model.Order;
 import Model.Product;
 
@@ -114,7 +113,7 @@ public class AddOrderView implements ActionListener {
 
 	private void populateProducts() {
 
-		List<Product> products = ProductManager.getProducts();
+		List<Product> products = BusinessLayer.getProducts();
 		for (Product p : (List<Product>) products) {
 			table.addRow(p.getTableEntry());
 
@@ -273,14 +272,14 @@ public class AddOrderView implements ActionListener {
 				
 				System.out.println("Calling adding order");
 				
-				OrderManager.addOrder(this.order, customerId);
+				BusinessLayer.addOrder(this.order, customerId);
 			} else {
 
 				// for testing purposes
 				Order o = new Order();
 				System.out.println("Calling editing order");
 				
-				OrderManager.editOrder(o, 0);
+				BusinessLayer.editOrder(o, 0);
 			}
 			// close window
 			this.frame.setVisible(false);

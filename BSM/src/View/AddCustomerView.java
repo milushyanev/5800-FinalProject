@@ -19,6 +19,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+<<<<<<< HEAD
+=======
+import BusinessLayer.BusinessLayer;
+import Model.Address;
+import Model.Customer;
+import Model.Order;
+
+import javax.swing.JOptionPane;
+>>>>>>> parent of aff98a2 (fixed some errors)
 public class AddCustomerView implements ActionListener {
 
 	private JLabel addLbl, personLbl, addressLbl;
@@ -268,8 +277,27 @@ if(event.getSource() == this.confirmAdd) {
 			//use the above info to make customer and address
 			if(customer == null) {
 				
+<<<<<<< HEAD
 				//for testing purposes
 				if (fname != "" && lname != "" && dob != null && street != "" && city != "" && state != "" && phone != "" && number != 0 && zip != 0 && broncoID != 0 ) 
+=======
+			{
+				this.errorBox("Fields cannot be blank");
+			}
+			else
+			{
+				if(customer == null) {
+					
+					//for testing purposes
+					
+
+					{
+						Address a = new Address( street, number, zip,city, state);
+						Customer c = new Customer(broncoID, fname, lname, dob, phone, a );
+						
+						BusinessLayer.addCustomer(c);
+					}
+>>>>>>> parent of aff98a2 (fixed some errors)
 
 				{
 					Address a = new Address( street, number, zip,city, state);
@@ -277,6 +305,7 @@ if(event.getSource() == this.confirmAdd) {
 					desktop.addLine(c);
 					BusinessLayer.addCustomer(c);
 				}
+<<<<<<< HEAD
 
 			}
 			else {
@@ -289,6 +318,18 @@ if(event.getSource() == this.confirmAdd) {
 					Customer c = new Customer(broncoID, fname, lname, dob, phone, a );
 					desktop.updateLine(line, c);
 					BusinessLayer.editCustomer(c, id);
+=======
+				else {
+					
+
+					{
+						int id = Integer.parseInt(customer[0]);
+						Address a = new Address( street, number, zip,city, state);
+						Customer c = new Customer(broncoID, fname, lname, dob, phone, a );
+						
+						BusinessLayer.editCustomer(c, id);
+					}
+>>>>>>> parent of aff98a2 (fixed some errors)
 				}
 			}
 			//close window

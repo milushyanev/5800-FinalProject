@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import BusinessLayer.ProductManager;
+import BusinessLayer.BusinessLayer;
 import Model.Product;
 
 public class AddProductView implements ActionListener {
@@ -33,7 +33,6 @@ public class AddProductView implements ActionListener {
 	private JFrame frame;
 
 	private int line;
-	
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -42,8 +41,6 @@ public class AddProductView implements ActionListener {
 		this.desktop = desktop;
 		this.product = null; // null indicates we are adding
 		buildFrame("add");
-		
-	
 	}
 
 	public AddProductView(DesktopAppView desktop, String[] s, int line) {
@@ -55,7 +52,7 @@ public class AddProductView implements ActionListener {
 		}
 
 		buildFrame("edit");
-		
+
 		this.productID.setText("" + s[0]);
 		this.name.setText(s[1]);
 		this.price.setText("" + s[2]);
@@ -115,7 +112,6 @@ public class AddProductView implements ActionListener {
 	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent event) {
 
-		
 		if (event.getSource() == this.confirmAdd) {
 
 			int productID = 0;
@@ -143,7 +139,7 @@ public class AddProductView implements ActionListener {
 				System.out.println(p.toString());
 				
 				
-				ProductManager.addProduct(p);
+				BusinessLayer.addProduct(p);
 
 			} else {
 
@@ -151,7 +147,7 @@ public class AddProductView implements ActionListener {
 				Product p = new Product(name, price);
 
 
-				ProductManager.editProduct(p, id); // need an id to edit product
+				BusinessLayer.editProduct(p, id); // need an id to edit product
 			}
 			// close window
 			this.frame.setVisible(false);

@@ -28,6 +28,7 @@ import javax.swing.text.Highlighter;
 
 import org.hibernate.mapping.Component;
 
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/DesktopAppView.java
 =======
 import BusinessLayer.CustomerManager;
@@ -35,6 +36,9 @@ import BusinessLayer.ProductManager;
 
 import BusinessLayer.OrderManager;
 
+=======
+import BusinessLayer.BusinessLayer;
+>>>>>>> parent of aff98a2 (fixed some errors)
 import Model.Customer;
 import Model.Item;
 import Model.Order;
@@ -53,6 +57,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 
 	private JPanel panel1, panel2, panel3;
 	
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/DesktopAppView.java
 	private BusinessLayer business;
 =======
@@ -60,6 +65,9 @@ public class DesktopAppView extends JFrame implements ActionListener {
 	private ProductManager productManager;
 	private OrderManager orderManager;
 >>>>>>> parent of ae5bdab (changes):BSM/src/View/DesktopAppView.java
+=======
+	private BusinessLayer business;
+>>>>>>> parent of aff98a2 (fixed some errors)
 	
 	//private JTextArea dataArea;
 	
@@ -84,11 +92,15 @@ public class DesktopAppView extends JFrame implements ActionListener {
 		this.initializeComponents();
 
 		this.buildUI();
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/DesktopAppView.java
 		this.business = getBusiness();
 =======
 		this.getManagers();
 >>>>>>> parent of ae5bdab (changes):BSM/src/View/DesktopAppView.java
+=======
+		this.business = getBusiness();
+>>>>>>> parent of aff98a2 (fixed some errors)
 		
 	}
 
@@ -218,11 +230,15 @@ public class DesktopAppView extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		
 		
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/DesktopAppView.java
 		this.business = this.getBusiness();
 =======
 		
 >>>>>>> parent of ae5bdab (changes):BSM/src/View/DesktopAppView.java
+=======
+		this.business = this.getBusiness();
+>>>>>>> parent of aff98a2 (fixed some errors)
 		
 		if (event.getSource() == this.getCustomers) {
 			
@@ -238,11 +254,15 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			
 			table.addRow(columns);
 			
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/DesktopAppView.java
 			List<Customer> customers = this.business.getCustomers();
 =======
 			List<Customer> customers = this.customerManager.getCustomers();
 >>>>>>> parent of ae5bdab (changes):BSM/src/View/DesktopAppView.java
+=======
+			List<Customer> customers = this.business.getCustomers();
+>>>>>>> parent of aff98a2 (fixed some errors)
 			for(Customer c : (List<Customer>) customers) {
 				table.addRow(c.getTableEntry());
 			}
@@ -270,11 +290,15 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			
 			table.addRow(columns);
 			
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/DesktopAppView.java
 			List<Product> products = BusinessLayer.getProducts();
 =======
 			List<Product> products = this.productManager.getProducts();
 >>>>>>> parent of ae5bdab (changes):BSM/src/View/DesktopAppView.java
+=======
+			List<Product> products = BusinessLayer.getProducts();
+>>>>>>> parent of aff98a2 (fixed some errors)
 			for (Product p : (List<Product>)products)
 			{
 				table.addRow(p.getTableEntry());
@@ -315,11 +339,15 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			
 			table.addRow(columns);
 			
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/DesktopAppView.java
 			List<Order> orders = this.business.getOrders();
 =======
 			List<Order> orders = this.orderManager.getOrders();
 >>>>>>> parent of ae5bdab (changes):BSM/src/View/DesktopAppView.java
+=======
+			List<Order> orders = this.business.getOrders();
+>>>>>>> parent of aff98a2 (fixed some errors)
 		
 			for(Order o : (List<Order>) orders) {
 				table.addRow(o.getTableEntry());
@@ -391,6 +419,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			selectedLine = -1;
 			if(view == 0) {				
 				
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/DesktopAppView.java
 				BusinessLayer.deleteCustomer(id);
 			}
@@ -403,15 +432,22 @@ public class DesktopAppView extends JFrame implements ActionListener {
 				BusinessLayer.deleteOrder(id);
 =======
 				this.customerManager.deleteCustomer(id);
+=======
+				BusinessLayer.deleteCustomer(id);
+>>>>>>> parent of aff98a2 (fixed some errors)
 			}
 			else if(view == 1) {
 				
-				this.productManager.deleteProduct(id);
+				BusinessLayer.deleteProduct(id);
 			}
 			else if(view == 2) {
 				
+<<<<<<< HEAD
 				this.orderManager.deleteOrder(id);
 >>>>>>> parent of ae5bdab (changes):BSM/src/View/DesktopAppView.java
+=======
+				BusinessLayer.deleteOrder(id);
+>>>>>>> parent of aff98a2 (fixed some errors)
 			}
 		}
 		else if(event.getSource() == this.reportButton) {
@@ -431,6 +467,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 				report = "total spending: $11.11";
 			}
 			else if(view == 1) {
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/DesktopAppView.java
 				report = "date1 price1\ndate2 price2";
 =======
@@ -438,6 +475,9 @@ public class DesktopAppView extends JFrame implements ActionListener {
 				// Replace 1 with productId
 				this.productManager.getHistorialPrice(1);
 >>>>>>> parent of ae5bdab (changes):BSM/src/View/DesktopAppView.java
+=======
+				report = "date1 price1\ndate2 price2";
+>>>>>>> parent of aff98a2 (fixed some errors)
 			}
 			new ReportView(header, report);
 		}
@@ -494,6 +534,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 	}
 	
 	//singleton pattern
+<<<<<<< HEAD
 <<<<<<< HEAD:BSM/src/DesktopAppView.java
 	private BusinessLayer getBusiness() {
 		if(this.business == null) {
@@ -515,6 +556,14 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			
 		}
 >>>>>>> parent of ae5bdab (changes):BSM/src/View/DesktopAppView.java
+=======
+	private BusinessLayer getBusiness() {
+		if(this.business == null) {
+			this.business = new BusinessLayer();
+		}
+		
+		return this.business;
+>>>>>>> parent of aff98a2 (fixed some errors)
 	}
 
 }
