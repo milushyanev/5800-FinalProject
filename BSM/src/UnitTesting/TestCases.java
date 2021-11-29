@@ -14,6 +14,10 @@ import javax.swing.text.BadLocationException;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
 import View.DesktopAppView;
 
@@ -56,12 +60,79 @@ public class TestCases {
 		type(s);
 	}
 	
+	public int getLastYCoord(DesktopAppView view) {
+		int rows = view.rowCount();
+		
+		return 90 + (rows) * 15;
+	}
+	
+
+	
+	//test ID display
+	@Test
+	public void testFailure1() throws AWTException{
+		bot = new Robot();
+		
+		DesktopAppView view = new DesktopAppView();
+		
+		
+		//add product
+		click(460, 50);		
+		click(280, 280);	
+		clickType(160, 140, "product1");		
+		clickType(160, 170, "1");	
+		click(130, 215);	
+		
+		//delete product
+		int y = this.getLastYCoord(view);
+		click(640, y);	
+		
+		int row = view.selectedRow();
+		
+		String ID = view.getItem(row, 0);
+		
+		try{Thread.sleep(3000);}catch(InterruptedException e){}
+		
+		assertTrue(!ID.equals("0"));
+		
+	}
+	
+	
+	@Test
+	public void testFailure2() throws AWTException{
+		bot = new Robot();
+		
+		DesktopAppView view = new DesktopAppView();
+		
+		//add order
+		click(580, 50);		
+		click(280, 280);
+		clickType(175, 140, "1");		
+		clickType(175, 225, "3");	
+		click(250, 270);
+		click(295, 425);
+		click(295, 700);
+		
+
+		int y = this.getLastYCoord(view);
+		click(640, y);	
+		
+		int row = view.selectedRow();
+		
+		String ID = view.getItem(row, 0);
+		
+		try{Thread.sleep(3000);}catch(InterruptedException e){}
+		
+		assertTrue(!ID.equals("0"));
+		
+	}
+	
 	//cover as much code as possible
 	@Test
 	public void coverageTest() throws AWTException, BadLocationException {
 		bot = new Robot();
 		
-		new DesktopAppView();
+		DesktopAppView view = new DesktopAppView();
 		
 		//add customer
 		click(340, 50);		
@@ -78,14 +149,18 @@ public class TestCases {
 		click(260, 320);
 		
 		//report customer
-		click(640, 200);
+		int y = this.getLastYCoord(view);
+		
+		click(640, y);
 		click(420, 320);
 		click(145, 205);
 		
 		//delete customer
-		//EDIT THIS IF Y COORD TOO LARGE
-		click(640, 200);	
+		y = this.getLastYCoord(view);
+		click(640, y);	
 		click(640, 280);	
+		
+		try{Thread.sleep(1000);}catch(InterruptedException e){}
 		
 		//add product
 		click(460, 50);		
@@ -95,9 +170,11 @@ public class TestCases {
 		click(130, 215);	
 		
 		//delete product
-		//EDIT THIS IF Y COORD TOO LARGE
-		click(640, 150);	
+		y = this.getLastYCoord(view);
+		click(640, y);	
 		click(640, 280);	
+		
+		try{Thread.sleep(1000);}catch(InterruptedException e){}
 		
 		//add order
 		click(580, 50);		
@@ -109,15 +186,17 @@ public class TestCases {
 		click(295, 700);
 		
 		//delete order
-		//EDIT THIS IF Y COORD TOO LARGE
-		click(640, 165);	
+		y = this.getLastYCoord(view);
+		click(640, y);	
 		click(640, 280);	
+		
+		try{Thread.sleep(1000);}catch(InterruptedException e){}
 		
 		//date report
 		click(350, 350);
 		click(145, 205);
 		
-		try{Thread.sleep(5000);}catch(InterruptedException e){}
+		try{Thread.sleep(3000);}catch(InterruptedException e){}
 		
 		
 		
@@ -151,8 +230,10 @@ public class TestCases {
 	    //System.out.println(s);
 	    System.out.println(s1);
 	    
+	    try{Thread.sleep(3000);}catch(InterruptedException e){}
+	    
 	    if(s1.contains("java.lang.ArrayIndexOutOfBoundsException")) {
-	    	fail();
+	    	throw new IndexOutOfBoundsException();
 	    }
 
 
@@ -193,10 +274,13 @@ public class TestCases {
 			}
 		}
 		
+		try{Thread.sleep(3000);}catch(InterruptedException e){}
+		
 		assertTrue(!found);
 		
 
 	}
+	
 	
 	//normal customer entry
 	@Test
@@ -220,6 +304,8 @@ public class TestCases {
 		clickType(430, 220, "Pomona");		
 		clickType(430, 250, "CA");
 		click(260, 320);
+
+		try{Thread.sleep(3000);}catch(InterruptedException e){}
 		
 		int col = 1;
 		
@@ -232,6 +318,8 @@ public class TestCases {
 				found = true;
 			}
 		}
+		
+		try{Thread.sleep(3000);}catch(InterruptedException e){}
 		
 		assertTrue(found);
 		
@@ -266,6 +354,8 @@ public class TestCases {
 				found = true;
 			}
 		}
+		
+		try{Thread.sleep(3000);}catch(InterruptedException e){}
 		
 		assertTrue(found);
 	}
@@ -306,6 +396,8 @@ public class TestCases {
 			}
 		}
 		
+		try{Thread.sleep(3000);}catch(InterruptedException e){}
+		
 		assertTrue(found);
 		
 		
@@ -341,6 +433,8 @@ public class TestCases {
 				found = true;
 			}
 		}
+		
+		try{Thread.sleep(3000);}catch(InterruptedException e){}
 		
 		assertTrue(found);
 	}
