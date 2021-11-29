@@ -1,3 +1,4 @@
+package View;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -9,6 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import BusinessLayer.ProductManager;
+import Model.Product;
 
 public class AddProductView implements ActionListener {
 
@@ -131,14 +135,14 @@ public class AddProductView implements ActionListener {
 				System.out.println(p.toString());
 				
 				desktop.addLine(p);
-				BusinessLayer.addProduct(p);
+				ProductManager.addProduct(p);
 			} else {
 
 				int id = Integer.parseInt(product[0]);
 				Product p = new Product(name, price);
 
 				desktop.updateLine(line, p);
-				BusinessLayer.editProduct(p, id); // need an id to edit product
+				ProductManager.editProduct(p, id); // need an id to edit product
 			}
 			// close window
 			this.frame.setVisible(false);

@@ -1,3 +1,4 @@
+package View;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -22,6 +22,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
+
+import BusinessLayer.OrderManager;
+import BusinessLayer.ProductManager;
+import BusinessLayer.CustomerManager;
+import Model.Order;
+import Model.Product;
+
+
 
 public class AddOrderView implements ActionListener {
 
@@ -81,7 +89,7 @@ public class AddOrderView implements ActionListener {
 
 
 		
-		this.order = BusinessLayer.getOrder(Integer.parseInt(s[0]));
+		this.order = OrderManager.getOrder(Integer.parseInt(s[0]));
 		
 		int id = Integer.parseInt(s[1]);
 
@@ -96,7 +104,7 @@ public class AddOrderView implements ActionListener {
 		
 		for (Product p : this.order.getProducts()) {
 			int pID = p.getId();
-			Product current = BusinessLayer.getProduct(pID);
+			Product current = ProductManager.getProduct(pID);
 			
 			this.cartTable.addRow(current.getTableEntry());
 		}
@@ -119,7 +127,7 @@ public class AddOrderView implements ActionListener {
 
 	private void populateProducts() {
 
-		List<Product> products = BusinessLayer.getProducts();
+		List<Product> products = ProductManager.getProducts();
 		for (Product p : (List<Product>) products) {
 			table.addRow(p.getTableEntry());
 
@@ -286,23 +294,23 @@ public class AddOrderView implements ActionListener {
 
 				
 				this.order = new Order(dateTime, price, discount);
-				this.order.setCustomer(BusinessLayer.getCustomer(customerId));
+				this.order.setCustomer(CustomerManager.getCustomer(customerId));
 				
 				for(int a = 1; a < this.shoppingCart.getRowCount(); a++) {
 					int pID = Integer.parseInt((String) this.cartTable.getValueAt(a,  0));
 					
-					this.order.addProduct(BusinessLayer.getProduct(pID));
+					this.order.addProduct(ProductManager.getProduct(pID));
 				}
 				
 				desktop.addLine(order);
-				BusinessLayer.addOrder(this.order, customerId);
+				OrderManager.addOrder(this.order, customerId);
 			} else {
 
 				// for testing purposes
 				Order o = new Order();
 				System.out.println("Calling editing order");
 				desktop.updateLine(line, o);
-				BusinessLayer.editOrder(o, 0);
+				OrderManager.editOrder(o, 0);
 			}
 			// close window
 			this.frame.setVisible(false);

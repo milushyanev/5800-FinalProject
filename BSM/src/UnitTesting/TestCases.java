@@ -1,3 +1,4 @@
+package UnitTesting;
 import java.awt.AWTException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,6 +14,8 @@ import javax.swing.text.BadLocationException;
 
 import org.junit.Rule;
 import org.junit.Test;
+
+import View.DesktopAppView;
 
 public class TestCases {
 

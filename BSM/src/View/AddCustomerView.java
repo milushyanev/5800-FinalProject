@@ -1,3 +1,4 @@
+package View;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -13,6 +14,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import BusinessLayer.CustomerManager;
+import Model.Address;
+import Model.Customer;
 
 public class AddCustomerView implements ActionListener {
 
@@ -263,7 +268,7 @@ if(event.getSource() == this.confirmAdd) {
 					Address a = new Address( street, number, zip,city, state);
 					Customer c = new Customer(broncoID, fname, lname, dob, phone, a );
 					desktop.addLine(c);
-					BusinessLayer.addCustomer(c);
+					CustomerManager.addCustomer(c);
 				}
 
 			}
@@ -276,7 +281,7 @@ if(event.getSource() == this.confirmAdd) {
 					Address a = new Address( street, number, zip,city, state);
 					Customer c = new Customer(broncoID, fname, lname, dob, phone, a );
 					desktop.updateLine(line, c);
-					BusinessLayer.editCustomer(c, id);
+					CustomerManager.editCustomer(c, id);
 				}
 			}
 			//close window
