@@ -73,6 +73,16 @@ public class Order extends Item{
 		this.discountpercentage = discount;
 		this.DetermineDiscount(discount);
 	}
+	
+	public Order(Customer customer, Product product)
+	{
+		super();
+		this.dateTimeOrdered = LocalDateTime.now();
+		this.products.add(product);
+		this.discountpercentage = 0.0 ; 
+		this.CalculateTotalPriceWithDiscount();
+		
+	}
 
 	public int getId() {
 		return id;

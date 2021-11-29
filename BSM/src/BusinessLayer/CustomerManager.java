@@ -1,7 +1,7 @@
 package BusinessLayer;
 import java.util.List;
 
-
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -109,8 +109,47 @@ public class CustomerManager {
 	}
 	
 	public static Customer getCustomer(int ID) {
-		//fetch customer from data access		
-		return new Customer();
+		//fetch customer from data access	
+		Session session = factory.getCurrentSession();
+		try {
+			session = factory.openSession();
+			session.beginTransaction();
+			
+			Customer c = (Customer) session.load(Customer.class, ID);
+			return c;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
+		return null;
+		
+
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static Customer getCustomerWithBronco(int broncoId) {
+		//fetch customer from data access	
+		Session session = factory.getCurrentSession();
+		try {
+			session = factory.openSession();
+			session.beginTransaction();
+			
+			Customer c = session.byNaturalId(Customer.class)
+					.using("bronco_id", broncoId)
+					.load();
+			
+			return c;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
+		return null;
+		
+
 	}
 	
 	public static  List<Customer> getCustomers() {

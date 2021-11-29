@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NaturalId;
+
 import java.text.SimpleDateFormat;
 
 @Entity
@@ -26,6 +29,7 @@ public class Customer extends Item {
 	
 	//TODO
 	//needs column int database
+	@NaturalId
 	@Column(name="bronco_id")
 	private int bronco_id;
 	

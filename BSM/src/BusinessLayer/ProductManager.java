@@ -156,6 +156,28 @@ public class ProductManager {
 				return null;
 	}
 	
+	public static Product getProductWithName(String productName) {
+		//fetch customer from data access	
+		Session session = factory.getCurrentSession();
+		try {
+			session = factory.openSession();
+			session.beginTransaction();
+			
+			Product p = session.byNaturalId(Product.class)
+					.using("name", productName)
+					.load();
+			
+			return p;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			session.close();
+		}
+		return null;
+	
+	}
+	
 	protected void finalize()
 	{
 		factory.close();

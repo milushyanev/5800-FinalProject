@@ -38,6 +38,8 @@ public static boolean addOrder(Order o, int customerID) {
 			
 			//Enter Cusomter ID at UI 
 			Customer c = session.get(Customer.class, customerID);
+			
+			o.CalculateTotalPriceWithDiscount();
 			c.addOrder(o);
 			session.save(o);
 			session.getTransaction().commit();
@@ -121,6 +123,15 @@ public static boolean addOrder(Order o, int customerID) {
 			session.close();
 		}
 		return null;
+	}
+	
+	public static Order CreateOrderFromWeb(String broncoId, String ProductName)
+	{
+		Customer c = CustomerManager.getCustomerWithBronco(Integer.parseInt(broncoId));
+		Product p = ProductManager.getProductWithName(ProductName);
+		
+		Order Order = new Order(c,p);
+		return Order;
 	}
 	
 	protected void finalize()

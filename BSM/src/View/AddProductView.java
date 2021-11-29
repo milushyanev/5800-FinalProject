@@ -121,6 +121,7 @@ public class AddProductView implements ActionListener {
 				name = this.name.getText();
 				System.out.println(name);
 				price = Double.parseDouble(this.price.getText());
+				
 				System.out.println(price);
 
 			} catch (Exception e) {
