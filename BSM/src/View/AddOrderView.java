@@ -276,7 +276,7 @@ public class AddOrderView implements ActionListener {
 			LocalDateTime dateTime = null;
 			int customerId = 0;
 			
-			double discount = 0;
+			double discount = Double.parseDouble(this.discount.getText());
 			int NoOfProduct = this.order.getProducts().size();
 			try {
 				
@@ -295,6 +295,7 @@ public class AddOrderView implements ActionListener {
 				
 				this.order = new Order(dateTime, price, discount);
 				this.order.setCustomer(CustomerManager.getCustomer(customerId));
+				this.order.setDiscount(discount);
 				
 				for(int a = 1; a < this.shoppingCart.getRowCount(); a++) {
 					int pID = Integer.parseInt((String) this.cartTable.getValueAt(a,  0));

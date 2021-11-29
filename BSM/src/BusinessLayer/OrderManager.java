@@ -33,8 +33,7 @@ public static boolean addOrder(Order o, int customerID) {
 		try {
 			session.beginTransaction();
 			
-			
-			o.DetermineDiscount();
+
 			
 			
 			//Enter Cusomter ID at UI 
@@ -59,6 +58,12 @@ public static boolean addOrder(Order o, int customerID) {
 	}
 	
 	public static boolean editOrder(Order o, int ID) {
+		
+		
+		
+		
+		
+		
 		
 		System.out.println("Modifying Ordeewr....");
 		

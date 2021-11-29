@@ -71,6 +71,7 @@ public class Order extends Item{
 		this.dateTimeOrdered  = dateTimeOrder;
 		this.totalPrice = totalPrice;
 		this.discountpercentage = discount;
+		this.DetermineDiscount(discount);
 	}
 
 	public int getId() {
@@ -125,9 +126,19 @@ public class Order extends Item{
 		this.customer = customer;
 	}
 	
-	public void DetermineDiscount()
+	public void DetermineDiscount(Double percentage)
 	{
-		this.discountpercentage= 0.3;
+		this.totalPrice = this.totalPrice *(1 - percentage);
+	}
+	
+	public void CalculateTotalPriceWithDiscount()
+	{
+		int length = this.products.size();
+		for(int i = 0; i < length; i++)
+		{
+			this.totalPrice += products.get(i).getPrice();
+		}
+		this.DetermineDiscount(discountpercentage);
 	}
 
 
@@ -137,7 +148,7 @@ public class Order extends Item{
 	}
 	
 	public String[] getTableEntry() {
-		return new String[] {"" + id, "" + customer.getId(), dateTimeOrdered.toString(), "" + totalPrice, "" + discountpercentage,};
+		return new String[] {"" + id, "" + customer.getId(), dateTimeOrdered.toString(), "" + totalPrice, "" + this.discountpercentage};
 
 	}
 
