@@ -1,4 +1,3 @@
-package View;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,6 +58,7 @@ public class ReportView implements ActionListener {
 		frame.getContentPane().add(panel1, BorderLayout.CENTER);
 		frame.setBounds(280, 120, 292, 232);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocation(0,0);
 		frame.setVisible(true);
 	}
 

@@ -1,4 +1,3 @@
-package View;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -7,7 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -22,16 +23,11 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import BusinessLayer.OrderManager;
-import BusinessLayer.ProductManager;
-import Model.Order;
-import Model.Product;
-
 public class AddOrderView implements ActionListener {
 
 	private JLabel addLbl, orderLbl;
 
-	private JLabel orderIDLbl, dateTimeLbl, customerLbl, priceLbl, productsLbl;
+	private JLabel discountLbl, dateTimeLbl, customerLbl, priceLbl, productsLbl;
 
 //	private JTextArea products;
 
@@ -44,7 +40,7 @@ public class AddOrderView implements ActionListener {
 
 	
 
-	private JTextField orderID, customer;
+	private JTextField discount, customer;
 
 	private JFormattedTextField dateTime;
 
@@ -56,7 +52,7 @@ public class AddOrderView implements ActionListener {
 	private Order order;
 	
 	boolean newOrder;
-	float price;
+	double price;
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -83,18 +79,27 @@ public class AddOrderView implements ActionListener {
 			// throw exception, Order not found
 		}
 
-		// all this information extracted from the Order retrieved from the data access
-		int orderID = Integer.parseInt(s[0]);
-		String name = s[1];
-		String price = s[2];
-		String customer = "customer name";
+
+		
+		this.order = BusinessLayer.getOrder(Integer.parseInt(s[0]));
+		
+		int id = Integer.parseInt(s[1]);
+
+		double discount = Double.parseDouble(s[4]);
 
 		buildFrame("edit");
 
-		this.orderID.setText("" + orderID);
+		this.discount.setText("" + discount);
 		this.dateTime.setText(LocalDateTime.now().toString());
 
-		this.customer.setText(customer);
+		this.customer.setText("" + id);
+		
+		for (Product p : this.order.getProducts()) {
+			int pID = p.getId();
+			Product current = BusinessLayer.getProduct(pID);
+			
+			this.cartTable.addRow(current.getTableEntry());
+		}
 		
 		
 
@@ -114,7 +119,7 @@ public class AddOrderView implements ActionListener {
 
 	private void populateProducts() {
 
-		List<Product> products = ProductManager.getProducts();
+		List<Product> products = BusinessLayer.getProducts();
 		for (Product p : (List<Product>) products) {
 			table.addRow(p.getTableEntry());
 
@@ -132,14 +137,14 @@ public class AddOrderView implements ActionListener {
 		orderLbl.setBounds(5, 54, 168, 30);
 		this.orderLbl.setFont(new Font("Arial", Font.PLAIN, 25));
 
-		this.orderIDLbl = new JLabel("order id:");
-		orderIDLbl.setBounds(5, 102, 75, 16);
+		this.discountLbl = new JLabel("discount:");
+		discountLbl.setBounds(5, 186, 75, 16);
 
 		this.dateTimeLbl = new JLabel("dateTime:");
-		dateTimeLbl.setBounds(5, 130, 75, 16);
+		dateTimeLbl.setBounds(5, 146, 75, 16);
 
 		this.customerLbl = new JLabel("customer:");
-		customerLbl.setBounds(5, 186, 75, 16);
+		customerLbl.setBounds(5, 102, 75, 16);
 
 		this.priceLbl = new JLabel("total price: $0.00");
 		priceLbl.setBounds(16, 613, 200, 16);
@@ -185,16 +190,21 @@ public class AddOrderView implements ActionListener {
 
 		this.setRows(cartTable);
 
-		this.orderID = new JTextField();
-		orderID.setBounds(92, 96, 168, 28);
+		this.discount = new JTextField();
+		discount.setBounds(92, 180, 168, 28);
 
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy 'at' HH:mm:ss");
 		this.dateTime = new JFormattedTextField(df);
-		dateTime.setBounds(92, 124, 168, 28);
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		LocalDateTime now = LocalDateTime.now();  
+		
+		dateTime.setText(dtf.format(now));
+		dateTime.setBounds(92, 140, 168, 28);
 
-		dateTime.setBounds(92, 151, 168, 28);
+		
 		this.customer = new JTextField();
-		customer.setBounds(92, 180, 168, 28);
+		customer.setBounds(92, 96, 168, 28);
 //		this.products = new JTextArea();
 //		products.setBounds(336, 96, 168, 134);
 
@@ -211,14 +221,14 @@ public class AddOrderView implements ActionListener {
 		this.panel1.add(this.addLbl);
 		this.panel1.add(this.orderLbl);
 
-		this.panel1.add(this.orderIDLbl);
+		this.panel1.add(this.discountLbl);
 		this.panel1.add(this.dateTimeLbl);
 
 		this.panel1.add(this.customerLbl);
 		this.panel1.add(this.priceLbl);
 		this.panel1.add(this.productsLbl);
 
-		this.panel1.add(this.orderID);
+		this.panel1.add(this.discount);
 		this.panel1.add(this.dateTime);
 		this.panel1.add(this.customer);
 		this.panel1.add(this.dataTable);
@@ -232,6 +242,7 @@ public class AddOrderView implements ActionListener {
 		frame.getContentPane().add(panel1, BorderLayout.CENTER);
 		frame.setBounds(280, 120, 578, 730);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocation(0,0);
 		frame.setVisible(true);
 	}
 	
@@ -254,13 +265,17 @@ public class AddOrderView implements ActionListener {
 
 			int orderID;
 
-			Date dateTime;
+			LocalDateTime dateTime = null;
 			int customerId = 0;
+			
+			double discount = 0;
 			int NoOfProduct = this.order.getProducts().size();
 			try {
+				
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 
 				// orderID = Integer.parseInt(this.orderID.getText());
-				dateTime = (Date) this.dateTime.getValue();
+				dateTime = LocalDateTime.parse(this.dateTime.getText(), dtf);
 
 				customerId = Integer.parseInt(this.customer.getText());
 			} catch (Exception e) {
@@ -269,18 +284,25 @@ public class AddOrderView implements ActionListener {
 			// use the above info to make Order and address
 			if (newOrder == true) {
 
-				// for testing purposes
 				
-				System.out.println("Calling adding order");
+				this.order = new Order(dateTime, price, discount);
+				this.order.setCustomer(BusinessLayer.getCustomer(customerId));
 				
-				OrderManager.addOrder(this.order, customerId);
+				for(int a = 1; a < this.shoppingCart.getRowCount(); a++) {
+					int pID = Integer.parseInt((String) this.cartTable.getValueAt(a,  0));
+					
+					this.order.addProduct(BusinessLayer.getProduct(pID));
+				}
+				
+				desktop.addLine(order);
+				BusinessLayer.addOrder(this.order, customerId);
 			} else {
 
 				// for testing purposes
 				Order o = new Order();
 				System.out.println("Calling editing order");
-				
-				OrderManager.editOrder(o, 0);
+				desktop.updateLine(line, o);
+				BusinessLayer.editOrder(o, 0);
 			}
 			// close window
 			this.frame.setVisible(false);

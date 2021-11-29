@@ -1,4 +1,3 @@
-package View;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -25,16 +24,6 @@ import javax.swing.text.Highlighter;
 
 import org.hibernate.mapping.Component;
 
-import BusinessLayer.CustomerManager;
-import BusinessLayer.ProductManager;
-
-import BusinessLayer.OrderManager;
-
-import Model.Customer;
-import Model.Item;
-import Model.Order;
-import Model.Product;
-
 //import javax.swing.JEditorPane;
 //import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -47,9 +36,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 
 	private JPanel panel1, panel2, panel3;
 	
-	private CustomerManager customerManager;
-	private ProductManager productManager;
-	private OrderManager orderManager;
+	private BusinessLayer business;
 	
 	//private JTextArea dataArea;
 	
@@ -74,7 +61,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 		this.initializeComponents();
 
 		this.buildUI();
-		this.getManagers();
+		this.business = getBusiness();
 		
 	}
 
@@ -157,6 +144,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 		this.endDate.setText("2/2/2222");
 		
 		
+		
 	}
 
 	private void buildUI() {
@@ -194,6 +182,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 		this.setBounds(350, 140, 900, 383);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
+		this.setLocation(0,0);
 		this.setVisible(true);
 	}
 
@@ -204,7 +193,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		
 		
-		
+		this.business = this.getBusiness();
 		
 		if (event.getSource() == this.getCustomers) {
 			
@@ -220,7 +209,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			
 			table.addRow(columns);
 			
-			List<Customer> customers = this.customerManager.getCustomers();
+			List<Customer> customers = this.business.getCustomers();
 			for(Customer c : (List<Customer>) customers) {
 				table.addRow(c.getTableEntry());
 			}
@@ -248,7 +237,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			
 			table.addRow(columns);
 			
-			List<Product> products = this.productManager.getProducts();
+			List<Product> products = BusinessLayer.getProducts();
 			for (Product p : (List<Product>)products)
 			{
 				table.addRow(p.getTableEntry());
@@ -289,7 +278,7 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			
 			table.addRow(columns);
 			
-			List<Order> orders = this.orderManager.getOrders();
+			List<Order> orders = this.business.getOrders();
 		
 			for(Order o : (List<Order>) orders) {
 				table.addRow(o.getTableEntry());
@@ -361,18 +350,21 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			selectedLine = -1;
 			if(view == 0) {				
 				
-				this.customerManager.deleteCustomer(id);
+				BusinessLayer.deleteCustomer(id);
 			}
 			else if(view == 1) {
 				
-				this.productManager.deleteProduct(id);
+				BusinessLayer.deleteProduct(id);
 			}
 			else if(view == 2) {
 				
-				this.orderManager.deleteOrder(id);
+				BusinessLayer.deleteOrder(id);
 			}
 		}
 		else if(event.getSource() == this.reportButton) {
+			
+			
+			this.selectedLine = dataTable.getSelectedRow();
 			
 			if(selectedLine == -1) {
 				//throw exception
@@ -383,15 +375,15 @@ public class DesktopAppView extends JFrame implements ActionListener {
 			
 
 			String lineID = getRow(selectedLine)[0];
-			String header = "displaying report for " + lineID;
+			String header = "displaying report for ";
 			String report = "";
-			if(view == 0) {				
+			if(view == 0) {
+				header += "customer #" + lineID;
 				report = "total spending: $11.11";
 			}
 			else if(view == 1) {
-				System.out.println("Showing historical Price");
-				// Replace 1 with productId
-				this.productManager.getHistorialPrice(1);
+				header += "product #" + lineID;
+				report = "date1 price1\ndate2 price2";
 			}
 			new ReportView(header, report);
 		}
@@ -425,7 +417,6 @@ public class DesktopAppView extends JFrame implements ActionListener {
 		button.setText(text);
 	}
 	
-	
 	public void updateLine(int line, Item item) {
 		
 		String row[] = item.getTableEntry();
@@ -445,18 +436,32 @@ public class DesktopAppView extends JFrame implements ActionListener {
 	}
 	
 	//singleton pattern
-	private void getManagers() {
-		if(this.customerManager == null) {
-			this.customerManager = new CustomerManager();
+	private BusinessLayer getBusiness() {
+		if(this.business == null) {
+			this.business = new BusinessLayer();
 		}
-		if(this.productManager == null) {
-			this.productManager = new ProductManager();
-			
-		}
-		if(this.orderManager == null) {
-			this.orderManager = new OrderManager();
-			
-		}
+		
+		return this.business;
 	}
+	
+	
+	public String getItem(int row, int col) {
+		String s = (String) this.table.getValueAt(row, col);
+		
+		return s;
+	}
+	
+	public int rowCount() {
+		return this.dataTable.getRowCount();
+	}
+	
+	public int columnCount() {
+		return this.dataTable.getColumnCount();
+	}
+	
+	public boolean checkVisible() {
+		return this.isVisible();
+	}
+	
 
 }
